@@ -1,5 +1,5 @@
-const CACHE = 'planificador-v1'; // súbalo a v2, v3... cada vez que publique cambios
-const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png'];
+const CACHE = 'planificador-v2'; // súbalo a v3, v4... cada vez que publique cambios
+const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -51,3 +51,4 @@ self.addEventListener('fetch', (e) => {
     })
   );
 });
+
