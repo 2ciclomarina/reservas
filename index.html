@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#4338ca">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Planificador">
+    <meta name="apple-mobile-web-app-title" content="Reservas">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" type="image/png" href="icons/icon-192.png">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <title>Planificador Institucional - Colegio Marina de Chile</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -64,7 +64,9 @@
 
             /* Modales: casi a pantalla completa */
             .modal > .flex { padding: 0.5rem !important; padding-top: calc(0.5rem + env(safe-area-inset-top)) !important; }
-            .modal .max-h-\[70vh\] { max-height: 75dvh !important; }
+            .modal .max-h-
+70vh
+{ max-height: 75dvh !important; }
 
             /* Horario semanal: la tabla se desliza horizontalmente, la barra de semanas no se queda fija */
             #tablaHorario { min-width: 680px; }
@@ -1301,129 +1303,7 @@
                                 </div>
                                 <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4" id="adminCatalogoContenedor"></div>
                                 
-                                <button onclick="window.descargarReporteRecursosAdminPDF()" class="md:hidden mt-4 w-full bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl shadow-md text-sm font-bold flex items-center justify-center gap-2">
-                                    <i class="fas fa-file-pdf text-lg"></i> Descargar Reporte Formal (PDF)
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- TAB: REGLAS DE RESERVA -->
-                        <div id="tab-reglas" class="admin-tab-content">
-                            <h3 class="font-black text-2xl text-fuchsia-900 mb-1">Reglas y Restricciones</h3>
-                            <p class="text-sm text-slate-500 mb-6">Configura anticipación, límites de uso y bloquea días por feriados o cambio de actividades.</p>
-                            
-                            <div class="bg-white p-6 rounded-2xl border border-fuchsia-200 shadow-sm max-w-4xl">
-                                <div class="space-y-6">
-                                    <div class="flex justify-between items-center border-b border-fuchsia-100 pb-4">
-                                        <div><label class="text-base font-bold text-slate-800 block">Anticipación Máxima (Días)</label><span class="text-xs text-slate-500">Cuántos días hacia el futuro pueden agendar. (0 = sin límite)</span></div>
-                                        <input type="number" id="reglaMaxDias" min="0" class="w-24 border border-slate-300 rounded-lg p-3 text-center text-base font-bold">
-                                    </div>
-                                    <div class="border-b border-fuchsia-100 pb-4">
-                                        <label class="text-base font-bold text-slate-800 block mb-2">Límites Semanales por Recinto</label><span class="text-xs text-slate-500 block mb-4">Máximo de reservas que puede hacer un mismo docente en una semana en un espacio. (0 = sin límite).</span>
-                                        <div id="limitesRecintosContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-                                    </div>
-                                    <div class="border-b border-fuchsia-100 pb-4">
-                                        <label class="text-base font-bold text-slate-800 block mb-3">Docentes Exentos (Ignoran los límites semanales)</label>
-                                        <div class="border border-slate-200 rounded-xl p-4 max-h-48 overflow-y-auto bg-slate-50 grid grid-cols-2 gap-3" id="reglaExcepcionesContainer"></div>
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="text-base font-bold text-slate-800 block mb-2"><i class="fas fa-calendar-times text-rose-500 mr-1"></i> Días Bloqueados (Feriados / Actividades Especiales)</label>
-                                        <span class="text-xs text-slate-500 block mb-3">Las fechas agregadas aquí no podrán ser agendadas por la IA ni manualmente por los docentes.</span>
-                                        <div class="flex gap-2 mb-3 bg-rose-50 p-3 rounded-lg border border-rose-100">
-                                            <input type="date" id="nuevoFeriadoInput" class="border border-rose-200 rounded-lg p-2 text-sm font-bold text-rose-900 focus:ring-1 focus:ring-rose-500 outline-none">
-                                            <input type="text" id="nuevoFeriadoDesc" placeholder="Motivo (Ej: Feriado Nacional)" class="flex-1 border border-rose-200 rounded-lg p-2 text-sm text-slate-700 focus:ring-1 focus:ring-rose-500 outline-none">
-                                            <button type="button" onclick="window.agregarFeriadoAdmin()" class="bg-rose-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-rose-700 shadow-sm transition-colors"><i class="fas fa-plus"></i> Bloquear</button>
-                                        </div>
-                                        <div id="listaFeriadosContainer" class="grid grid-cols-1 md:grid-cols-2 gap-2 max-h-40 overflow-y-auto"></div>
-                                    </div>
-                                </div>
-                                <button onclick="window.guardarReglas()" class="mt-6 w-full bg-fuchsia-600 hover:bg-fuchsia-700 text-white py-4 rounded-xl text-base font-bold shadow-md transition-all hover:shadow-lg"><i class="fas fa-save mr-2"></i> Guardar Políticas y Feriados</button>
-                            </div>
-                        </div>
-
-                        <!-- TAB: HORARIOS BASE -->
-                        <div id="tab-horarios" class="admin-tab-content">
-                            <h3 class="font-black text-2xl text-amber-900 mb-1">Editor Inteligente de Horarios Base</h3>
-                            <p class="text-sm text-slate-500 mb-6">Selecciona el curso y la jornada que deseas editar. Usa Ctrl+C / Ctrl+V desde Excel para pegar tu horario rápidamente.</p>
-                            
-                            <div class="bg-white p-5 rounded-2xl border border-amber-200 shadow-sm relative">
-                                
-                                <div class="flex flex-wrap items-center gap-4 mb-4 bg-amber-50 p-4 rounded-xl border border-amber-100">
-                                    <div>
-                                        <label class="font-bold text-xs uppercase tracking-wide text-amber-800 block mb-1">1. Curso a Editar:</label>
-                                        <select id="adminHorarioCurso" onchange="window.cargarEditorHorario()" class="p-2 rounded-lg border border-amber-300 text-sm font-bold text-amber-900 bg-white min-w-[180px] shadow-sm cursor-pointer"></select>
-                                    </div>
-                                    <div>
-                                        <label class="font-bold text-xs uppercase tracking-wide text-amber-800 block mb-1">2. Jornada:</label>
-                                        <select id="adminHorarioJornada" onchange="window.cargarEditorHorario()" class="p-2 rounded-lg border border-amber-300 text-sm font-bold text-amber-900 bg-white min-w-[180px] shadow-sm cursor-pointer">
-                                            <option value="manana">Jornada Mañana</option>
-                                            <option value="tarde">Jornada Tarde</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl shadow-sm mb-6 flex items-start gap-3">
-                                    <div class="bg-emerald-100 text-emerald-600 rounded-full w-8 h-8 flex items-center justify-center shrink-0 mt-0.5"><i class="fas fa-lightbulb"></i></div>
-                                    <div>
-                                        <h4 class="font-bold text-emerald-800 text-sm">Copiado Inteligente desde Excel (Direct Paste)</h4>
-                                        <p class="text-xs text-emerald-700 mt-1">Selecciona tu horario en Excel (Ctrl+C), haz clic en la celda del <strong>Lunes (Módulo 1)</strong> aquí abajo y presiona <strong>Ctrl+V</strong>.</p>
-                                    </div>
-                                </div>
-                                
-                                <div id="gridEditorContainer" class="w-full max-w-4xl mx-auto">
-                                    <h4 id="tituloGrillaEditor" class="text-sm font-bold text-amber-800 text-center mb-3 bg-amber-100 py-2 rounded-lg">Seleccione un curso...</h4>
-                                    <div class="overflow-x-auto border border-amber-200 shadow-inner rounded-lg bg-slate-50">
-                                        <table class="w-full text-xs text-center border-collapse">
-                                            <thead class="bg-white text-amber-900 border-b">
-                                                <tr>
-                                                    <th class="p-2 border-r w-12 text-slate-400">Módulo</th>
-                                                    <th class="p-2 border-r">Lunes</th>
-                                                    <th class="p-2 border-r">Martes</th>
-                                                    <th class="p-2 border-r">Miércoles</th>
-                                                    <th class="p-2 border-r">Jueves</th>
-                                                    <th class="p-2">Viernes</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="adminHorarioTbody" class="divide-y divide-slate-200">
-                                                <tr><td colspan="6" class="p-6 text-slate-400 italic">Seleccione curso y jornada arriba.</td></tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                
-                                <button id="btnGuardarHorarioNuevo" onclick="window.guardarHorarioBase()" class="mt-8 w-full max-w-4xl mx-auto block bg-amber-600 hover:bg-amber-700 text-white py-4 rounded-xl text-base font-bold shadow-md transition-colors text-center disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <i class="fas fa-save mr-2"></i> Seleccione un curso para guardar
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- TAB: LIMPIEZA MASIVA -->
-                        <div id="tab-limpieza" class="admin-tab-content">
-                            <h3 class="font-black text-2xl text-red-900 mb-1">Eliminación Masiva y Solicitudes</h3>
-                            <p class="text-sm text-slate-500 mb-6">Revisa las anulaciones o aprueba reservas que están en Lista de Espera.</p>
-                            
-                            <div class="bg-white p-5 rounded-2xl border border-red-200 shadow-sm">
-                                <div class="flex flex-col md:flex-row justify-between items-center mb-5 bg-red-50 p-4 rounded-xl border border-red-100">
-                                    <span class="font-bold text-base text-red-800">Filtrar tabla:</span>
-                                    <select id="filtroMasivoEstado" onchange="window.renderListaMasivaAdmin()" class="mt-2 md:mt-0 p-2.5 rounded-lg border border-red-300 text-sm font-bold text-red-900 bg-white">
-                                        <option value="solicitudes">Anulaciones Solicitadas</option>
-                                        <option value="espera">En Lista de Espera</option>
-                                        <option value="todas">Todas las Actividades</option>
-                                    </select>
-                                </div>
-                                <div class="overflow-x-auto border border-red-200 rounded-xl shadow-inner max-h-[50vh] overflow-y-auto no-scrollbar bg-slate-50">
-                                    <table class="w-full text-sm text-left border-collapse min-w-[600px]"><thead class="bg-white text-red-900 sticky top-0 shadow-sm"><tr><th class="p-3 w-12 text-center border-b"><input type="checkbox" id="chkAllMasivo" onchange="window.toggleAllMasivo(this)" class="w-4 h-4"></th><th class="p-3 border-b">Estado</th><th class="p-3 border-b">Fecha/Módulo</th><th class="p-3 border-b">Curso</th><th class="p-3 border-b">Actividad</th><th class="p-3 border-b">Lugar</th><th class="p-3 border-b">Docente</th></tr></thead><tbody id="adminMasivoTbody" class="divide-y divide-slate-200"></tbody></table>
-                                </div>
-                                <button id="btnEliminarMasivo" onclick="window.eliminarMasivamente()" class="mt-6 w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl text-base font-bold shadow-md transition-colors"><i class="fas fa-trash-alt mr-2"></i> Eliminar Definitivamente la Selección</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                <button onclick="window.descargarReporteRecursosAdminPDF()" class="md:hidden mt-4 w-full bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl shadow-md text-sm font-bold flex items-center
 
     <!-- SCRIPT PRINCIPAL: FIREBASE Y LÓGICA -->
     <script type="module">
@@ -1596,7 +1476,7 @@ window.cursosVirtuales = [
         window.optionsSalasBase = (sel, ed) => {
             const grupo = (titulo, arr) => {
                 let h = `<optgroup label="${titulo}">`;
-                arr.forEach(s => h += `<option value="${s.id}" ${sel === s.id ? 'selected' : ''}>${s.nombre}</option>`);
+                arr.forEach(s => h += `<option value="${s.id}" sel===s.id?'selected':''>{s.nombre}</option>`);
                 return h + '</optgroup>';
             };
             if (ed === 'MATRIZ') return grupo('Edificio Matriz', window.salasPredeterminadas);
@@ -1693,7 +1573,7 @@ window.cursosVirtuales = [
         window.lblDuracion = (min) => {
             let h = Math.floor(min/60), m = min%60;
             if (h === 0) return `${m} minutos`;
-            return `${h} hora${h>1?'s':''}${m ? ' ' + m + ' min' : ''}`;
+            return `hhora{h>1?'s':''}${m ? ' ' + m + ' min' : ''}`;
         };
 
         // Dibuja el campo "Duración" del agendamiento rápido según el edificio
@@ -1705,7 +1585,7 @@ window.cursosVirtuales = [
 
             if (jornada === 'unica') {
                 let horaIni = b ? b.time.split(' - ')[0] : '08:00';
-                let opts = [15, 30, 45, 60, 75, 90, 105, 120].map(m => `<option value="${m}" ${m===60?'selected':''}>${window.lblDuracion(m)}</option>`).join('');
+                let opts = [15, 30, 45, 60, 75, 90, 105, 120].map(m => `<option value="${m}" m===60?'selected':''>{window.lblDuracion(m)}</option>`).join('');
                 cont.innerHTML = `
                     <div class="bg-teal-50 border border-teal-200 rounded p-3">
                         <label class="block text-xs font-bold text-teal-800 mb-2"><i class="far fa-clock mr-1"></i> Horario exacto de la reserva</label>
@@ -1838,7 +1718,7 @@ window.cursosVirtuales = [
         };
 
         window.showToast = (msg, type = 'success') => { 
-            const container = document.getElementById('toast-container'); const toast = document.createElement('div'); const color = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-indigo-600'); const icon = type === 'success' ? 'fa-check' : (type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'); toast.className = `${color} text-white px-4 py-3 rounded-lg shadow-xl text-sm font-bold flex items-center gap-2 transition-opacity duration-300 opacity-0 transform translate-y-4 z-[99999]`; toast.innerHTML = `<i class="fas ${icon}"></i> <span>${msg}</span>`; container.appendChild(toast); setTimeout(() => { toast.classList.remove('opacity-0', 'translate-y-4'); }, 10); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-4'); setTimeout(() => toast.remove(), 300); }, 3500); 
+            const container = document.getElementById('toast-container'); const toast = document.createElement('div'); const color = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-red-600' : 'bg-indigo-600'); const icon = type === 'success' ? 'fa-check' : (type === 'error' ? 'fa-exclamation-triangle' : 'fa-info-circle'); toast.className = `${color} text-white px-4 py-3 rounded-lg shadow-xl text-sm font-bold flex items-center gap-2 transition-opacity duration-300 opacity-0 transform translate-y-4 z-[99999]`; toast.innerHTML = `<i class="fas icon"></i><span>{msg}</span>`; container.appendChild(toast); setTimeout(() => { toast.classList.remove('opacity-0', 'translate-y-4'); }, 10); setTimeout(() => { toast.classList.add('opacity-0', 'translate-y-4'); setTimeout(() => toast.remove(), 300); }, 3500); 
         }
         window.customConfirm = (msg, onConfirm) => { document.getElementById('confirmMsg').innerText = msg; window.toggleModal('modalConfirm', true); document.getElementById('btnConfirmOk').onclick = () => { window.toggleModal('modalConfirm', false); onConfirm(); }; document.getElementById('btnConfirmCancel').onclick = () => window.toggleModal('modalConfirm', false); }
         window.toggleModal = (id, show) => { const m = document.getElementById(id); if(show) { m.classList.remove('hidden'); requestAnimationFrame(()=>m.classList.remove('opacity-0')); } else { m.classList.add('opacity-0'); setTimeout(()=>m.classList.add('hidden'),250); } }
@@ -2098,15 +1978,15 @@ window.cursosVirtuales = [
             html += '</optgroup>';
 
             html += '<optgroup label="Electivos Multinivel">'; 
-            window.cursosVirtuales.forEach(c => html += `<option value="CURSO_${c}">${c}</option>`); 
+            window.cursosVirtuales.forEach(c => html += `<option value="CURSO_c">{c}</option>`); 
             html += '</optgroup>';
 
             html += `<optgroup label="Recintos Especiales (${window.nombresEdificios[window.edificioActivo]})">`; 
-            window.recintosDelEdificio().forEach(r => html += `<option value="RECINTO_${r.id}">${r.nombre}</option>`); 
+            window.recintosDelEdificio().forEach(r => html += `<option value="RECINTO_r.id">{r.nombre}</option>`); 
             html += '</optgroup>';
             
             html += `<optgroup label="Salas de Clases (${window.nombresEdificios[window.edificioActivo]})">`; 
-            window.salasDelEdificio().forEach(s => html += `<option value="SALA_${s.id}">${s.nombre}</option>`); 
+            window.salasDelEdificio().forEach(s => html += `<option value="SALA_s.id">{s.nombre}</option>`); 
             html += '</optgroup>';
             
             select.innerHTML = html; 
@@ -2127,31 +2007,31 @@ window.cursosVirtuales = [
                 if(ciclosObj[cat].length > 0) {
                     htmlCursos += `<div class="col-span-full mt-2 mb-1"><span class="text-[10px] font-black text-pink-400 uppercase tracking-wider border-b border-pink-100 pb-0.5 block">${cat}</span></div>`;
                     ciclosObj[cat].sort(window.ordenarCursos).forEach(c => {
-                        htmlCursos += `<button onclick="window.setVistaBloques('${c}', 'Curso ${c}')" class="block-btn bg-white border border-pink-200 text-pink-700 font-black py-2 rounded-lg shadow-sm hover:bg-pink-50 text-xs">${c}</button>`;
+                        htmlCursos += `<button onclick="window.setVistaBloques('${c}', 'Curso c')"class="block-btnbg-whiteborderborder-pink-200text-pink-700font-blackpy-2rounded-lgshadow-smhover:bg-pink-50text-xs">{c}</button>`;
                     });
                 }
             }
             document.getElementById('bloquesVistaCursos').innerHTML = htmlCursos || '<p class="text-xs text-slate-400 italic col-span-full">No hay cursos asignados a este edificio. Asígnalos en Panel de Gestión → Institución y Cursos.</p>';
             
-            window.salasDelEdificio().forEach(s => htmlSalas += `<button onclick="window.setVistaBloques('SALA_${s.id}', '${s.nombre}')" class="block-btn bg-white border border-slate-300 text-slate-700 font-bold py-2 px-1 rounded-lg shadow-sm hover:bg-slate-100 text-xs">${s.nombre}</button>`); 
+            window.salasDelEdificio().forEach(s => htmlSalas += `<button onclick="window.setVistaBloques('SALA_s.id','{s.nombre}')" class="block-btn bg-white border border-slate-300 text-slate-700 font-bold py-2 px-1 rounded-lg shadow-sm hover:bg-slate-100 text-xs">${s.nombre}</button>`); 
             document.getElementById('bloquesVistaSalas').innerHTML = htmlSalas || '<p class="text-xs text-slate-400 italic col-span-full">Este edificio no usa salas base.</p>';
             
             window.recintosDelEdificio().forEach(r => {
                 let icon = r.nombre.toLowerCase().includes('comp') ? 'fa-laptop' : r.nombre.toLowerCase().includes('lab') ? 'fa-flask' : r.nombre.toLowerCase().includes('biblio') ? 'fa-book' : 'fa-map-marker-alt';
-                htmlRecintos += `<button onclick="window.setVistaBloques('RECINTO_${r.id}', '${r.nombre.replace(/'/g, "\\'")}')" class="block-btn bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold py-3 px-2 rounded-xl shadow-sm hover:bg-emerald-100 text-xs flex flex-col items-center justify-center gap-1 h-full"><i class="fas ${icon} text-emerald-600 text-lg"></i> <span class="text-center leading-tight">${r.nombre}</span></button>`;
+                htmlRecintos += `<button onclick="window.setVistaBloques('RECINTO_r.id','{r.nombre.replace(/'/g, "\\'")}')" class="block-btn bg-emerald-50 border border-emerald-200 text-emerald-800 font-bold py-3 px-2 rounded-xl shadow-sm hover:bg-emerald-100 text-xs flex flex-col items-center justify-center gap-1 h-full"><i class="fas icontext-emerald-600text-lg"></i><spanclass="text-centerleading-tight">{r.nombre}</span></button>`;
             });
             document.getElementById('bloquesVistaRecintos').innerHTML = htmlRecintos;
             
             window.catalogoDelEdificio().forEach(r => {
                 let icon = window.getIconoRecurso ? window.getIconoRecurso(r.nombre) : 'fa-box';
-                htmlMateriales += `<button onclick="window.abrirModalPrestamoRecurso('${r.id}', '${r.nombre.replace(/'/g, "\\'")}', ${r.stock})" class="block-btn bg-teal-50 border border-teal-200 text-teal-800 font-bold py-3 px-2 rounded-xl shadow-sm hover:bg-teal-100 text-xs flex flex-col items-center justify-center gap-1 h-full"><i class="fas ${icon} text-teal-600 text-lg"></i> <span class="text-center leading-tight">${r.nombre}</span><span class="text-[9px] font-normal opacity-70">Stock Total: ${r.stock}</span></button>`;
+                htmlMateriales += `<button onclick="window.abrirModalPrestamoRecurso('r.id','{r.nombre.replace(/'/g, "\\'")}', ${r.stock})" class="block-btn bg-teal-50 border border-teal-200 text-teal-800 font-bold py-3 px-2 rounded-xl shadow-sm hover:bg-teal-100 text-xs flex flex-col items-center justify-center gap-1 h-full"><i class="fas icontext-teal-600text-lg"></i><spanclass="text-centerleading-tight">{r.nombre}</span><span class="text-[9px] font-normal opacity-70">Stock Total: ${r.stock}</span></button>`;
             });
             let btnMat = document.getElementById('bloquesVistaMateriales');
             if(btnMat) btnMat.innerHTML = htmlMateriales || '<p class="text-xs text-slate-400 italic col-span-full">No hay recursos en el catálogo.</p>';
 
             let fSalas='', fRecintos='';
-            window.salasDelEdificio().forEach(s => fSalas += `<button onclick="window.seleccionarLugarReserva('${s.id}', '${s.nombre}')" class="bg-white border border-slate-300 text-slate-700 font-bold py-2 rounded shadow-sm hover:bg-blue-50 text-xs block-btn truncate px-1">${s.nombre}</button>`); document.getElementById('gridSalasForm').innerHTML = fSalas;
-            window.recintosDelEdificio().forEach(r => { let color = r.exclusivo ? 'bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'; fRecintos += `<button onclick="window.seleccionarLugarReserva('${r.id}', '${r.nombre.replace(/'/g, "\\'")}')" class="${color} font-bold py-3 rounded-lg shadow-sm text-xs block-btn flex items-center justify-center gap-1"><i class="fas fa-map-marker-alt opacity-50"></i> ${r.nombre}</button>`; }); document.getElementById('gridRecintosForm').innerHTML = fRecintos;
+            window.salasDelEdificio().forEach(s => fSalas += `<button onclick="window.seleccionarLugarReserva('s.id','{s.nombre}')" class="bg-white border border-slate-300 text-slate-700 font-bold py-2 rounded shadow-sm hover:bg-blue-50 text-xs block-btn truncate px-1">${s.nombre}</button>`); document.getElementById('gridSalasForm').innerHTML = fSalas;
+            window.recintosDelEdificio().forEach(r => { let color = r.exclusivo ? 'bg-emerald-50 border-emerald-300 text-emerald-800 hover:bg-emerald-100' : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-50'; fRecintos += `<button onclick="window.seleccionarLugarReserva('r.id','{r.nombre.replace(/'/g, "\\'")}')" class="${color} font-bold py-3 rounded-lg shadow-sm text-xs block-btn flex items-center justify-center gap-1"><i class="fas fa-map-marker-alt opacity-50"></i> ${r.nombre}</button>`; }); document.getElementById('gridRecintosForm').innerHTML = fRecintos;
         }
 
 
@@ -2185,9 +2065,9 @@ window.cursosVirtuales = [
         }
 /* ===== NUEVO: MAPA DINÁMICO POR EDIFICIO ===== */
         window.mapBtn = (id, texto, clase, extra = '') => 
-            `<button onclick="window.seleccionarDesdeMapa('${id}')" class="${clase} ${extra} p-3 rounded font-bold text-[10px] leading-tight hover:brightness-95 transition-all">${texto}</button>`;
+            `<button onclick="window.seleccionarDesdeMapa('id')"class="{clase} extrap-3roundedfont-boldtext-[10px]leading-tighthover:brightness-95transition-all">{texto}</button>`;
         window.mapFijo = (texto, extra = '') => 
-            `<div class="bg-slate-200 border border-slate-300 text-slate-600 ${extra} p-3 rounded font-bold text-[10px] text-center flex items-center justify-center opacity-70">${texto}</div>`;
+            `<div class="bg-slate-200 border border-slate-300 text-slate-600 extrap-3roundedfont-boldtext-[10px]text-centerflexitems-centerjustify-centeropacity-70">{texto}</div>`;
 
         window.renderMapaPlano = () => {
             const cont = document.getElementById('contenidoMapaPlano');
@@ -2330,7 +2210,7 @@ window.cursosVirtuales = [
                 for(let cat in ciclosObj) {
                     if(ciclosObj[cat].length > 0) {
                         htmlAdmin += `<optgroup label="${cat}">`;
-                        ciclosObj[cat].sort(window.ordenarCursos).forEach(c => htmlAdmin += `<option value="${c}">${c}</option>`);
+                        ciclosObj[cat].sort(window.ordenarCursos).forEach(c => htmlAdmin += `<option value="c">{c}</option>`);
                         htmlAdmin += `</optgroup>`;
                     }
                 }
@@ -2345,10 +2225,10 @@ window.cursosVirtuales = [
                 listaCursosAdminHtml += `<tr class="hover:bg-indigo-50 transition-colors">
                     <td class="p-4 font-black text-indigo-900">${c}</td>
                     <td class="p-3"><select id="adm_ciclo_${c}" class="border border-slate-300 rounded-lg p-2 text-xs w-full"><option value="PRE-BÁSICA" ${cicloAct==='PRE-BÁSICA'?'selected':''}>Pre-Básica</option><option value="PRIMER CICLO" ${cicloAct==='PRIMER CICLO'?'selected':''}>Primer Ciclo (1° a 4°)</option><option value="SEGUNDO CICLO" ${cicloAct==='SEGUNDO CICLO'?'selected':''}>Segundo Ciclo (5° a 8°)</option><option value="ENSEÑANZA MEDIA" ${cicloAct==='ENSEÑANZA MEDIA'?'selected':''}>Enseñanza Media</option><option value="OTROS" ${cicloAct==='OTROS'?'selected':''}>Otros</option></select></td>
-                    <td class="p-3"><select id="adm_edif_${c}" onchange="window.refrescarSalasCursoAdmin('${c}')" class="border border-slate-300 rounded-lg p-2 text-xs w-full font-bold text-emerald-800"><option value="MATRIZ" ${edifAct==='MATRIZ'?'selected':''}>Edificio Matriz</option><option value="CICLO_MENOR" ${edifAct==='CICLO_MENOR'?'selected':''}>Ciclo Menor</option></select></td>
-                    <td class="p-3 text-center"><input type="number" id="adm_alum_${c}" value="${det.alumnos}" class="w-16 border border-slate-300 rounded-lg p-2 text-sm text-center"></td>
+                    <td class="p-3"><select id="adm_edif_c"onchange="window.refrescarSalasCursoAdmin('{c}')" class="border border-slate-300 rounded-lg p-2 text-xs w-full font-bold text-emerald-800"><option value="MATRIZ" ${edifAct==='MATRIZ'?'selected':''}>Edificio Matriz</option><option value="CICLO_MENOR" ${edifAct==='CICLO_MENOR'?'selected':''}>Ciclo Menor</option></select></td>
+                    <td class="p-3 text-center"><input type="number" id="adm_alum_c"value="{det.alumnos}" class="w-16 border border-slate-300 rounded-lg p-2 text-sm text-center"></td>
                     <td class="p-3"><select id="adm_jor_${c}" class="border border-slate-300 rounded-lg p-2 text-xs w-full"><option value="ambas" ${det.jornada==='ambas'?'selected':''}>Completa</option><option value="manana" ${det.jornada==='manana'?'selected':''}>Solo Mañana</option><option value="tarde" ${det.jornada==='tarde'?'selected':''}>Solo Tarde</option></select></td>
-                    <td class="p-3"><select id="adm_sala_${c}" class="border border-slate-300 rounded-lg p-2 text-sm w-full"><option value="">Sin sala base</option>${window.optionsSalasBase(det.sala, edifAct)}</select></td>
+                    <td class="p-3"><select id="adm_sala_c"class="borderborder-slate-300rounded-lgp-2text-smw-full"><optionvalue="">Sinsalabase</option>{window.optionsSalasBase(det.sala, edifAct)}</select></td>
                     <td class="p-3 text-center"><button onclick="window.eliminarCurso('${c}')" class="text-rose-500 hover:text-rose-700 text-xl transition-colors"><i class="fas fa-trash-alt"></i></button></td>
                 </tr>`; 
             });
@@ -2429,7 +2309,7 @@ window.cursosVirtuales = [
                 
                 let unicas = window.asignaturasElectivos[key];
                 selectAsig.innerHTML = '<option value="">-- Seleccionar Asignatura --</option>';
-                unicas.forEach(a => selectAsig.innerHTML += `<option value="${a}">${a}</option>`);
+                unicas.forEach(a => selectAsig.innerHTML += `<option value="a">{a}</option>`);
                 selectAsig.innerHTML += `<option value="Actividad Especial">Otra / Especial</option>`;
                 
                 window.verificarDisponibilidadManual(); 
@@ -2440,7 +2320,7 @@ window.cursosVirtuales = [
             }
 
             let unicas = new Set(); let cId = window.getCursoIdSeguro(curso); if(window.horariosBase[cId]) { if(window.horariosBase[cId].manana) window.horariosBase[cId].manana.forEach(f => f.forEach(a => { if(a && a.trim() !== "") unicas.add(a); })); if(window.horariosBase[cId].tarde) window.horariosBase[cId].tarde.forEach(f => f.forEach(a => { if(a && a.trim() !== "") unicas.add(a); })); }
-            selectAsig.innerHTML = '<option value="">-- Asignatura --</option>'; Array.from(unicas).sort().forEach(a => selectAsig.innerHTML += `<option value="${a}">${a}</option>`); selectAsig.innerHTML += `<option value="Actividad Especial">Actividad Especial / Otra</option>`;
+            selectAsig.innerHTML = '<option value="">-- Asignatura --</option>'; Array.from(unicas).sort().forEach(a => selectAsig.innerHTML += `<option value="a">{a}</option>`); selectAsig.innerHTML += `<option value="Actividad Especial">Actividad Especial / Otra</option>`;
             window.verificarDisponibilidadManual(); document.getElementById('lugarSelect').value = 'Sala de Clases'; document.getElementById('lblLugarForm').innerHTML = `<i class="fas fa-check-circle text-blue-500 mr-1"></i> Sala Base (${window.detallesCursos[curso]?.sala || 'No def.'})`;
             
             if(window.detallesCursos[curso]?.sala) {
@@ -2510,9 +2390,9 @@ window.cursosVirtuales = [
         }
 
         // ======================= LOGIN Y SESIONES =======================
-        window.seleccionarRolLogin = (rol) => { document.getElementById('step1Roles').classList.add('hidden'); document.getElementById('step2Form').classList.remove('hidden'); document.getElementById('btnGroupLogin').classList.remove('hidden'); document.getElementById('loginError').classList.add('hidden'); const selectLogin = document.getElementById('loginSelectUser'); let users = window.usuariosTotales.filter(u => u.rol === rol).sort((a,b) => a.nombre.localeCompare(b.nombre)); let html = '<option value="">-- Selecciona tu Nombre --</option>'; users.forEach(u => html += `<option value="${u.nombre}">${u.nombre}</option>`); selectLogin.innerHTML = html; }
+        window.seleccionarRolLogin = (rol) => { document.getElementById('step1Roles').classList.add('hidden'); document.getElementById('step2Form').classList.remove('hidden'); document.getElementById('btnGroupLogin').classList.remove('hidden'); document.getElementById('loginError').classList.add('hidden'); const selectLogin = document.getElementById('loginSelectUser'); let users = window.usuariosTotales.filter(u => u.rol === rol).sort((a,b) => a.nombre.localeCompare(b.nombre)); let html = '<option value="">-- Selecciona tu Nombre --</option>'; users.forEach(u => html += `<option value="u.nombre">{u.nombre}</option>`); selectLogin.innerHTML = html; }
         window.volverRolLogin = () => { document.getElementById('step1Roles').classList.remove('hidden'); document.getElementById('step2Form').classList.add('hidden'); document.getElementById('btnGroupLogin').classList.add('hidden'); document.getElementById('loginError').classList.add('hidden'); document.getElementById('loginSelectUser').value = ''; document.getElementById('loginPassword').value = ''; }
-        window.renderDropdownDocentesAgendar = () => { let selectPrincipal = document.getElementById('docentePrincipalSelect'); if(!selectPrincipal) return; let valP = selectPrincipal.value; let html = '<option value="">-- Seleccionar Docente --</option>'; let puedenAgendar = window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)); puedenAgendar.forEach(d => html += `<option value="${d.nombre}">${d.nombre}</option>`); selectPrincipal.innerHTML = html; if(window.isLogged && !window.adminMode && window.userRoleLabel === 'DOCENTE') { selectPrincipal.value = window.userName; selectPrincipal.disabled = true; } else { selectPrincipal.disabled = false; if (valP) selectPrincipal.value = valP; } }
+        window.renderDropdownDocentesAgendar = () => { let selectPrincipal = document.getElementById('docentePrincipalSelect'); if(!selectPrincipal) return; let valP = selectPrincipal.value; let html = '<option value="">-- Seleccionar Docente --</option>'; let puedenAgendar = window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)); puedenAgendar.forEach(d => html += `<option value="d.nombre">{d.nombre}</option>`); selectPrincipal.innerHTML = html; if(window.isLogged && !window.adminMode && window.userRoleLabel === 'DOCENTE') { selectPrincipal.value = window.userName; selectPrincipal.disabled = true; } else { selectPrincipal.disabled = false; if (valP) selectPrincipal.value = valP; } }
         
         window.actualizarSelectRecintos = () => { 
             let cursoSel = document.getElementById('cursoAgendarSelect').value; 
@@ -2542,7 +2422,7 @@ window.cursosVirtuales = [
             }
 
             let unicas = new Set(); let cId = window.getCursoIdSeguro(curso); if(window.horariosBase[cId]) { if(window.horariosBase[cId].manana) window.horariosBase[cId].manana.forEach(f => f.forEach(a => { if(a && a.trim() !== "") unicas.add(a); })); if(window.horariosBase[cId].tarde) window.horariosBase[cId].tarde.forEach(f => f.forEach(a => { if(a && a.trim() !== "") unicas.add(a); })); }
-            selectAsig.innerHTML = '<option value="">-- Asignatura --</option>'; Array.from(unicas).sort().forEach(a => selectAsig.innerHTML += `<option value="${a}">${a}</option>`); selectAsig.innerHTML += `<option value="Actividad Especial">Actividad Especial / Otra</option>`;
+            selectAsig.innerHTML = '<option value="">-- Asignatura --</option>'; Array.from(unicas).sort().forEach(a => selectAsig.innerHTML += `<option value="a">{a}</option>`); selectAsig.innerHTML += `<option value="Actividad Especial">Actividad Especial / Otra</option>`;
             window.verificarDisponibilidadManual(); document.getElementById('lugarSelect').value = 'Sala de Clases'; document.getElementById('lblLugarForm').innerHTML = `<i class="fas fa-check-circle text-blue-500 mr-1"></i> Sala Base (${window.detallesCursos[curso]?.sala || 'No def.'})`;
             
             if(window.detallesCursos[curso]?.sala) {
@@ -2598,7 +2478,7 @@ window.cursosVirtuales = [
             bloques.forEach((b, idx) => { 
                 if(idx + modsReq > bloques.length) return; 
                 let j_mod = `${window.getJornadaActiva()}_${idx}`;
-                selectBloque.innerHTML += `<option value="${j_mod}">${b.title} (${b.time})</option>`; 
+                selectBloque.innerHTML += `<option value="jmod">{b.title} (${b.time})</option>`; 
             });
             if(selectBloque.options.length === 0) selectBloque.innerHTML = '<option value="">No hay bloques para esa duración</option>';
         }
@@ -2739,11 +2619,11 @@ window.cursosVirtuales = [
             return 'fa-box';
         }
 
-window.actualizarDropdownAreasRecursos = () => { let areaSelect = document.getElementById('areaRecursoInput'); if(!areaSelect) return; let val = areaSelect.value; areaSelect.innerHTML = ''; window.recintosDelEdificio().forEach(r => areaSelect.innerHTML += `<option value="${r.nombre}">${r.nombre}</option>`); areaSelect.innerHTML += `<option value="General">General / Otros</option>`; if(val && Array.from(areaSelect.options).some(o => o.value === val)) areaSelect.value = val; }
+window.actualizarDropdownAreasRecursos = () => { let areaSelect = document.getElementById('areaRecursoInput'); if(!areaSelect) return; let val = areaSelect.value; areaSelect.innerHTML = ''; window.recintosDelEdificio().forEach(r => areaSelect.innerHTML += `<option value="r.nombre">{r.nombre}</option>`); areaSelect.innerHTML += `<option value="General">General / Otros</option>`; if(val && Array.from(areaSelect.options).some(o => o.value === val)) areaSelect.value = val; }
         
-window.abrirModalSeleccionRecursos = () => { const cont = document.getElementById('catalogoRecursosUI'); cont.innerHTML = ''; let agrupado = {}; window.catalogoDelEdificio().forEach(r => { if(!agrupado[r.area]) agrupado[r.area] = []; agrupado[r.area].push(r); }); for(let area in agrupado) { let html = `<div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"><h4 class="font-bold text-xs text-slate-800 mb-2 border-b border-slate-100 pb-1">${area}</h4><div class="space-y-2">`; agrupado[area].forEach(r => { let icon = window.getIconoRecurso(r.nombre); html += `<div class="flex items-center justify-between bg-slate-50 p-1.5 rounded border border-slate-100"><span class="text-[10px] font-bold text-slate-700"><i class="fas ${icon} text-teal-600 mr-1 w-3 text-center"></i> ${r.nombre} <span class="text-teal-600 font-bold ml-1">(Stock: ${r.stock})</span></span><div class="flex items-center gap-1"><input type="number" id="cant_rec_${r.id}" value="1" min="1" max="${r.stock + 10}" class="w-10 border border-slate-200 rounded p-1 text-[10px] text-center"><button onclick="window.agregarRecursoForm('${r.id}', '${r.nombre.replace(/'/g, "\\'")}', '${area}')" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded text-[9px] font-bold transition-colors">Añadir</button></div></div>`; }); html += `</div></div>`; cont.innerHTML += html; } window.toggleModal('modalSelRecursos', true); }
+window.abrirModalSeleccionRecursos = () => { const cont = document.getElementById('catalogoRecursosUI'); cont.innerHTML = ''; let agrupado = {}; window.catalogoDelEdificio().forEach(r => { if(!agrupado[r.area]) agrupado[r.area] = []; agrupado[r.area].push(r); }); for(let area in agrupado) { let html = `<div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm"><h4 class="font-bold text-xs text-slate-800 mb-2 border-b border-slate-100 pb-1">${area}</h4><div class="space-y-2">`; agrupado[area].forEach(r => { let icon = window.getIconoRecurso(r.nombre); html += `<div class="flex items-center justify-between bg-slate-50 p-1.5 rounded border border-slate-100"><span class="text-[10px] font-bold text-slate-700"><i class="fas ${icon} text-teal-600 mr-1 w-3 text-center"></i> ${r.nombre} <span class="text-teal-600 font-bold ml-1">(Stock: ${r.stock})</span></span><div class="flex items-center gap-1"><input type="number" id="cant_rec_${r.id}" value="1" min="1" max="r.stock+10"class="w-10borderborder-slate-200roundedp-1text-[10px]text-center"><buttononclick="window.agregarRecursoForm('{r.id}', '${r.nombre.replace(/'/g, "\\'")}', '${area}')" class="bg-indigo-100 text-indigo-700 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded text-[9px] font-bold transition-colors">Añadir</button></div></div>`; }); html += `</div></div>`; cont.innerHTML += html; } window.toggleModal('modalSelRecursos', true); }
         
-        window.agregarRecursoForm = (id, nombre, area) => { let cant = parseInt(document.getElementById(`cant_rec_${id}`).value) || 1; window.recursosSolicitadosEnForm.push({ idCatalogo: id, nombre: nombre, area: area, cantidad: cant, estado: 'pendiente', aprobadoPor: '' }); window.renderRecursosEnForm(); window.showToast(`${nombre} añadido.`); }
+        window.agregarRecursoForm = (id, nombre, area) => { let cant = parseInt(document.getElementById(`cant_rec_id`).value)||1;window.recursosSolicitadosEnForm.push(idCatalogo:id,nombre:nombre,area:area,cantidad:cant,estado:'pendiente',aprobadoPor:'');window.renderRecursosEnForm();window.showToast(`{nombre} añadido.`); }
         
         window.renderRecursosEnForm = () => { 
             const cont = document.getElementById('listaRecursosSeleccionados'); 
@@ -2756,8 +2636,8 @@ window.abrirModalSeleccionRecursos = () => { const cont = document.getElementByI
             let html = ''; let htmlR = '';
             window.recursosSolicitadosEnForm.forEach((r, idx) => { 
                 let icon = window.getIconoRecurso(r.nombre);
-                html += `<div class="flex justify-between items-center bg-white p-1.5 rounded shadow-sm border border-emerald-100"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> ${r.nombre} <span class="text-[8px] bg-slate-100 px-1 rounded text-slate-500">${r.area}</span></span><button onclick="window.quitarRecursoForm(${idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`; 
-                htmlR += `<div class="flex justify-between items-center bg-white p-1 rounded shadow-sm border border-emerald-100"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> ${r.nombre}</span><button onclick="window.quitarRecursoForm(${idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`;
+                html += `<div class="flex justify-between items-center bg-white p-1.5 rounded shadow-sm border border-emerald-100"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> r.nombre<spanclass="text-[8px]bg-slate-100px-1roundedtext-slate-500">{r.area}</span></span><button onclick="window.quitarRecursoForm(${idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`; 
+                htmlR += `<div class="flex justify-between items-center bg-white p-1 rounded shadow-sm border border-emerald-100"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> r.nombre</span><buttononclick="window.quitarRecursoForm({idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`;
             }); 
             if(cont) cont.innerHTML = html; 
             if(contRapido) contRapido.innerHTML = htmlR;
@@ -2785,7 +2665,7 @@ window.bloquesPrestamoSeleccionados = [];
             document.getElementById('prestamoStockRecurso').value = stock;
             
             let htmlCursos = '<option value="">-- Curso / Área --</option>';
-            window.cursosDisponibles.sort(window.ordenarCursos).forEach(c => htmlCursos += `<option value="${c}">${c}</option>`);
+            window.cursosDisponibles.sort(window.ordenarCursos).forEach(c => htmlCursos += `<option value="c">{c}</option>`);
             
             // INCORPORACIÓN DE ELECTIVOS AL SELECTOR DE CURSOS DEL MODAL DE RECURSOS
             htmlCursos += `<optgroup label="Electivos Multinivel">
@@ -2801,9 +2681,9 @@ window.bloquesPrestamoSeleccionados = [];
             let selLugar = document.getElementById('prestamoLugarUso');
             let htmlLugar = '<option value="Sala de Clases">Sala Base del Curso</option>';
             htmlLugar += '<optgroup label="Recintos Especiales">';
-            window.recintosDelEdificio().forEach(r => htmlLugar += `<option value="${r.nombre}">${r.nombre}</option>`);
+            window.recintosDelEdificio().forEach(r => htmlLugar += `<option value="r.nombre">{r.nombre}</option>`);
             htmlLugar += '</optgroup><optgroup label="Salas de Clases">';
-            window.salasDelEdificio().forEach(s => htmlLugar += `<option value="${s.nombre}">${s.nombre}</option>`);
+            window.salasDelEdificio().forEach(s => htmlLugar += `<option value="s.nombre">{s.nombre}</option>`);
             htmlLugar += '</optgroup><option value="Otro">Otro lugar externo</option>';
             selLugar.innerHTML = htmlLugar;
             
@@ -2835,7 +2715,7 @@ window.bloquesPrestamoSeleccionados = [];
                 
                 let unicas = window.asignaturasElectivos[key] || [];
                 selectAsig.innerHTML = '<option value="">-- Asignatura --</option>';
-                unicas.forEach(a => selectAsig.innerHTML += `<option value="${a}">${a}</option>`);
+                unicas.forEach(a => selectAsig.innerHTML += `<option value="a">{a}</option>`);
                 selectAsig.innerHTML += `<option value="Actividad Especial">Otra / Especial</option>`;
                 return;
             }
@@ -2857,7 +2737,7 @@ window.bloquesPrestamoSeleccionados = [];
                 else if(lowerA.includes("electivo 2")) electivosDetectados.add("Electivo 2");
                 else if(lowerA.includes("electivo 3")) electivosDetectados.add("Electivo 3");
                 else if(lowerA.includes("electivo 4")) electivosDetectados.add("Electivo 4");
-                else selectAsig.innerHTML += `<option value="${a}">${a}</option>`; 
+                else selectAsig.innerHTML += `<option value="a">{a}</option>`; 
             }); 
             
             // Si el curso tiene electivos en su horario base, desplegamos las sub-asignaturas
@@ -2865,7 +2745,7 @@ window.bloquesPrestamoSeleccionados = [];
                 selectAsig.innerHTML += `<optgroup label="Sub-asignaturas de ${key}">`;
                 if(window.asignaturasElectivos[key]) {
                     window.asignaturasElectivos[key].forEach(sub => {
-                        selectAsig.innerHTML += `<option value="${sub}">${sub}</option>`;
+                        selectAsig.innerHTML += `<option value="sub">{sub}</option>`;
                     });
                 }
                 selectAsig.innerHTML += `</optgroup>`;
@@ -2934,11 +2814,11 @@ window.bloquesPrestamoSeleccionados = [];
 
             const pintarJornada = (jor, titulo, colorTitulo) => {
                 let arr = window.getArrayBloques(jor);
-                html += `<div class="col-span-4 text-[9px] font-bold ${colorTitulo} uppercase mt-1 border-b border-slate-100">${titulo}</div>`;
+                html += `<div class="col-span-4 text-[9px] font-bold colorTitulouppercasemt-1border-bborder-slate-100">{titulo}</div>`;
                 arr.forEach((b, idx) => {
                     let stockDisp = window.getStockEnBloque(idRecurso, fechaIn, jor, idx);
                     let colorStock = stockDisp > 0 ? 'text-emerald-600' : 'text-rose-500';
-                    html += `<button type="button" id="btn_pb_${jor}_${idx}" onclick="window.toggleBloquePrestamo('${jor}', ${idx})" class="border border-slate-300 bg-white hover:bg-teal-50 text-slate-600 rounded p-1.5 text-[9px] font-bold transition-colors flex flex-col items-center"><span>${b.title}</span><span class="text-[7.5px] font-normal text-slate-400">${b.time}</span><span class="text-[8px] mt-0.5 font-black bg-slate-50 border border-slate-100 rounded px-1 w-full ${colorStock}">D: ${stockDisp}</span></button>`;
+                    html += `<button type="button" id="btn_pb_${jor}_${idx}" onclick="window.toggleBloquePrestamo('${jor}', idx)"class="borderborder-slate-300bg-whitehover:bg-teal-50text-slate-600roundedp-1.5text-[9px]font-boldtransition-colorsflexflex-colitems-center"><span>{b.title}</span><span class="text-[7.5px] font-normal text-slate-400">${b.time}</span><span class="text-[8px] mt-0.5 font-black bg-slate-50 border border-slate-100 rounded px-1 w-full ${colorStock}">D: ${stockDisp}</span></button>`;
                 });
             };
 
@@ -3047,7 +2927,7 @@ window.bloquesPrestamoSeleccionados = [];
                 lblDisp = `<span class="text-rose-600 font-black">AGOTADO EN ESTE HORARIO (Irá a Espera)</span>`;
             }
             
-            let html = `<div class="bg-white p-2 rounded text-center text-xs border border-slate-200 mb-2 shadow-sm">Stock Total del Colegio: ${maxStock}<br>${lblDisp}</div>`;
+            let html = `<div class="bg-white p-2 rounded text-center text-xs border border-slate-200 mb-2 shadow-sm">Stock Total del Colegio: maxStock<br>{lblDisp}</div>`;
 
             if(lista.length > 0) {
                 lista.forEach(item => {
@@ -3056,7 +2936,7 @@ window.bloquesPrestamoSeleccionados = [];
                     let timeStr = item.bloque === 99 ? `${item.horaInicio} a ${item.horaFin}` : `Mód ${parseInt(item.bloque)+1}`;
                     let lugarUso = item.lugar === 'Solo Recursos' ? 'Sala de Clases' : item.lugar;
                     
-                    html += `<div class="bg-slate-50 border border-slate-200 p-2 rounded text-[10px] shadow-sm mb-1"><div class="flex justify-between font-bold"><span class="text-slate-700"><i class="far fa-clock"></i> ${timeStr}</span><span class="${col}">${st}</span></div><div class="text-slate-600 mt-1"><span class="font-black text-teal-700 bg-teal-100 px-1 rounded">${item.recDet.cantidad}x unid.</span> en <span class="font-bold">${lugarUso}</span> para ${item.curso} (${item.docente})</div></div>`;
+                    html += `<div class="bg-slate-50 border border-slate-200 p-2 rounded text-[10px] shadow-sm mb-1"><div class="flex justify-between font-bold"><span class="text-slate-700"><i class="far fa-clock"></i> timeStr</span><spanclass="{col}">st</span></div><divclass="text-slate-600mt-1"><spanclass="font-blacktext-teal-700bg-teal-100px-1rounded">{item.recDet.cantidad}x unid.</span> en <span class="font-bold">${lugarUso}</span> para item.curso({item.docente})</div></div>`;
                 });
             } else {
                 html += `<div class="bg-emerald-50 p-2 rounded text-emerald-800 text-[10px] font-bold text-center border border-emerald-200">Totalmente libre en los módulos que seleccionaste.</div>`;
@@ -3315,7 +3195,7 @@ window.bloquesPrestamoSeleccionados = [];
             html += `<thead class="bg-indigo-100 text-indigo-900 border-b border-indigo-200"><tr><th class="p-2 border-r border-indigo-200 w-24">Bloque</th>`;
             uniqueDates.forEach(d => {
                 let pDate = window.parseInputDate(d);
-                html += `<th class="p-2 border-r border-indigo-200 min-w-[120px]">${dias[pDate.getDay()-1]} ${pDate.getDate()}/${pDate.getMonth()+1}</th>`;
+                html += `<th class="p-2 border-r border-indigo-200 min-w-[120px]">${dias[pDate.getDay()-1]} pDate.getDate()/{pDate.getMonth()+1}</th>`;
             });
             html += `</tr></thead><tbody class="divide-y divide-slate-200">`;
 
@@ -3326,7 +3206,7 @@ window.bloquesPrestamoSeleccionados = [];
                 for(let b=0; b<maxB; b++) { if(proposals.some(p => p.jornada === jornada && b >= p.bloque && b < p.bloque + p.duracion)) { hasData = true; break; } }
                 if(!hasData) return;
 
-                html += `<tr><td colspan="${uniqueDates.length + 1}" class="bg-slate-200 font-bold text-[10px] text-left p-1.5 pl-3 text-slate-600">${titleLabel}</td></tr>`;
+                html += `<tr><td colspan="uniqueDates.length+1"class="bg-slate-200font-boldtext-[10px]text-leftp-1.5pl-3text-slate-600">{titleLabel}</td></tr>`;
                 for(let b=0; b<maxB; b++) {
                     html += `<tr class="bg-white"><td class="p-2 border-r border-slate-200 font-bold text-slate-400 bg-slate-50">Módulo ${b+1}</td>`;
                     uniqueDates.forEach(d => {
@@ -3335,7 +3215,7 @@ window.bloquesPrestamoSeleccionados = [];
                             let isFirst = matches[0].bloque === b;
                             html += `<td class="p-1 border-r border-slate-200 ${cInfo.bg} shadow-inner align-top ${isFirst ? 'border-t-[3px] '+cInfo.border : ''}"><div class="flex flex-col gap-1">`;
                             matches.forEach(match => {
-                                html += `<div class="bg-white/80 p-1 rounded border border-slate-200 shadow-sm"><i class="fas ${cInfo.icon} text-[10px] ${cInfo.text}"></i><div class="font-black text-xs text-slate-800 drop-shadow-sm">${match.curso}</div><div class="text-[8px] font-bold text-slate-500 leading-tight truncate">${match.nomLugar}</div></div>`;
+                                html += `<div class="bg-white/80 p-1 rounded border border-slate-200 shadow-sm"><i class="fas ${cInfo.icon} text-[10px] cInfo.text"></i><divclass="font-blacktext-xstext-slate-800drop-shadow-sm">{match.curso}</div><div class="text-[8px] font-bold text-slate-500 leading-tight truncate">${match.nomLugar}</div></div>`;
                             });
                             html += `</div></td>`;
                         } else {
@@ -3356,10 +3236,10 @@ window.bloquesPrestamoSeleccionados = [];
             
             uniqueDates.forEach((d, idx) => {
                 let pDate = window.parseInputDate(d);
-                let lbl = `${dias[pDate.getDay()-1]} ${pDate.getDate()}/${pDate.getMonth()+1}`;
+                let lbl = `${dias[pDate.getDay()-1]} pDate.getDate()/{pDate.getMonth()+1}`;
                 html += `<div class="bg-white p-2 rounded-lg border border-indigo-100 flex flex-col shadow-inner">
                             <label class="text-[10px] font-bold text-slate-500 mb-1 uppercase tracking-wide">Clase Propuesta: ${lbl}</label>
-                            <input type="date" id="ia_edit_date_${idx}" data-orig="${d}" value="${d}" class="border border-indigo-300 rounded p-1.5 text-xs text-indigo-900 font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
+                            <input type="date" id="ia_edit_date_idx"data-orig="{d}" value="${d}" class="border border-indigo-300 rounded p-1.5 text-xs text-indigo-900 font-bold focus:ring-2 focus:ring-indigo-500 outline-none">
                          </div>`;
             });
             
@@ -3604,7 +3484,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
 
             let lblJornadaGrilla = jorAct === 'unica' ? 'JORNADA CONTINUA' : (jorAct === 'manana' ? 'MAÑANA' : 'TARDE');
             let thHtml = `<tr><th class="p-2 border-r border-slate-300 w-20 text-center sticky left-0 bg-slate-100 z-10"><span class="text-[10px] uppercase font-black tracking-widest text-slate-400 block">${lblJornadaGrilla}</span>Bloque</th>`;
-            weekDates.forEach((d, i) => thHtml += `<th class="p-2 border-r border-slate-200 w-[18%] text-center"><span class="block text-slate-800 font-bold">${dias[i]}</span><span class="text-[9px] text-slate-500 font-medium">${d.getDate()}/${d.getMonth()+1}</span></th>`);
+            weekDates.forEach((d, i) => thHtml += `<th class="p-2 border-r border-slate-200 w-[18%] text-center"><span class="block text-slate-800 font-bold">dias[i]</span><spanclass="text-[9px]text-slate-500font-medium">{d.getDate()}/${d.getMonth()+1}</span></th>`);
             thead.innerHTML = thHtml + `</tr>`;
 
             let skipCells = Array(bloques.length).fill(null).map(() => Array(5).fill(false));
@@ -3641,8 +3521,8 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                     const getBloqueChoque = (vId) => {
                         let base = window.getBaseAsig(vId, jorBase, bIdx, dIdx);
                         let txtInfo = base ? `${base.toUpperCase()}<br>` : '';
-                        return `<div class="w-full h-full flex justify-center items-center bg-rose-50 rounded border border-rose-300 cursor-pointer hover:bg-rose-100 transition-colors p-1 min-h-[50px] group" onclick="window.prepararAgendamientoDirecto('', '${dateStr}', '${jorAct}', ${bIdx}, '${base}', '${vId}', true)">
-                            <span class="text-[10px] font-bold text-rose-600 text-center group-hover:hidden"><i class="fas fa-exclamation-triangle mb-1"></i><br>${txtInfo}${overlap.msg}</span>
+                        return `<div class="w-full h-full flex justify-center items-center bg-rose-50 rounded border border-rose-300 cursor-pointer hover:bg-rose-100 transition-colors p-1 min-h-[50px] group" onclick="window.prepararAgendamientoDirecto('', 'dateStr','{jorAct}', bIdx,'{base}', '${vId}', true)">
+                            <span class="text-[10px] font-bold text-rose-600 text-center group-hover:hidden"><i class="fas fa-exclamation-triangle mb-1"></i><br>txtInfo{overlap.msg}</span>
                             <span class="hidden group-hover:block font-bold text-rose-700 text-[9px] text-center"><i class="fas fa-exchange-alt mb-1"></i><br>Mover Curso</span>
                         </div>`;
                     };
@@ -3695,7 +3575,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                                 innerHTML = actsEnBloque.map(act => renderActCard(act, act.curso, '', dateStr, bIdx, jorAct)).join('<div class="my-1 border-t border-slate-200"></div>'); 
                             } else {
                                 let btnIdArg = isRecurso ? 'Solo Recursos' : idLugar;
-                                innerHTML = `<div class="w-full h-full rounded border border-dashed border-emerald-300 bg-emerald-50/30 flex justify-center items-center cursor-pointer hover:bg-emerald-100 transition-colors group p-2 min-h-[50px]" onclick="window.prepararAgendamientoDirecto('${btnIdArg}', '${dateStr}', '${jorAct}', ${bIdx})"><span class="font-bold text-emerald-600 text-[10px] group-hover:hidden">Libre</span><span class="hidden group-hover:block font-bold text-emerald-700 text-[10px]">Reservar</span></div>`; 
+                                innerHTML = `<div class="w-full h-full rounded border border-dashed border-emerald-300 bg-emerald-50/30 flex justify-center items-center cursor-pointer hover:bg-emerald-100 transition-colors group p-2 min-h-[50px]" onclick="window.prepararAgendamientoDirecto('btnIdArg','{dateStr}', '${jorAct}', ${bIdx})"><span class="font-bold text-emerald-600 text-[10px] group-hover:hidden">Libre</span><span class="hidden group-hover:block font-bold text-emerald-700 text-[10px]">Reservar</span></div>`; 
                             }
                         }
                     } else if (vista === 'ALL') {
@@ -3706,7 +3586,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                             let act = acts.length > 0 ? acts[0] : null; 
                             let base = window.getBaseAsig(curso, jorBase, bIdx, dIdx);
                             if(!base && !act) return;
-                            htmlActs += `<div class="flex items-center gap-1 text-[9px] leading-tight border border-slate-100 p-0.5 rounded bg-white shadow-sm mb-0.5"><span class="font-bold text-slate-400 bg-slate-50 px-1 py-0.5 rounded w-8 text-center truncate" title="${curso}">${curso.substring(0,10)}</span><div class="flex-1">${renderCeldaMini(act, base, curso, dateStr, bIdx, jorAct)}</div></div>`;
+                            htmlActs += `<div class="flex items-center gap-1 text-[9px] leading-tight border border-slate-100 p-0.5 rounded bg-white shadow-sm mb-0.5"><span class="font-bold text-slate-400 bg-slate-50 px-1 py-0.5 rounded w-8 text-center truncate" title="curso">{curso.substring(0,10)}</span><div class="flex-1">${renderCeldaMini(act, base, curso, dateStr, bIdx, jorAct)}</div></div>`;
                         }); 
                         innerHTML = htmlActs || '<div class="text-center text-slate-300 text-[9px] mt-2">-</div>';
                     } else {
@@ -3759,26 +3639,26 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                 
                 let infoHora = '';
                 if(act.horaInicio && act.horaFin) {
-                    infoHora = `<div class="text-[8px] font-black text-teal-700 bg-teal-100 rounded px-1 mt-1"><i class="far fa-clock"></i> ${act.horaInicio} - ${act.horaFin}${act.duracionMin ? ' · ' + act.duracionMin + ' min' : ''}</div>`;
+                    infoHora = `<div class="text-[8px] font-black text-teal-700 bg-teal-100 rounded px-1 mt-1"><i class="far fa-clock"></i> ${act.horaInicio} - act.horaFin{act.duracionMin ? ' · ' + act.duracionMin + ' min' : ''}</div>`;
                 }
 
-                let onclickAction = act.isBase ? '' : `onclick="window.abrirModalDetalle('${act.id}', '${curso}_${act.fecha}_${act.bloqueJornada}')"`;
+                let onclickAction = act.isBase ? '' : `onclick="window.abrirModalDetalle('act.id','{curso}_${act.fecha}_${act.bloqueJornada}')"`;
 
                 return `<div ${onclickAction} class="w-full h-full rounded border border-slate-200 ${bgClass} flex flex-col justify-center items-center p-1 shadow-sm ${act.isBase ? '' : 'cursor-pointer transform hover:scale-[1.02]'} relative min-h-[50px]">
                     ${recIcon}
                     ${esperaIcon}
                     <i class="fas ${c.icon} text-lg mb-1 opacity-70 ${textClass}"></i>
-                    <span class="font-black text-[10px] ${textClass} leading-none text-center">${act.nombre}</span>
+                    <span class="font-black text-[10px] textClassleading-nonetext-center">{act.nombre}</span>
                     <span class="text-[8px] font-bold text-slate-600 bg-white/70 px-1 rounded mt-0.5">${act.asignatura}</span>
-                    <div class="mt-1 bg-white/90 px-1 py-0.5 rounded text-[8px] font-bold text-slate-800 shadow-sm border ${c.border}">${curso} | ${act.lugar}</div>
+                    <div class="mt-1 bg-white/90 px-1 py-0.5 rounded text-[8px] font-bold text-slate-800 shadow-sm border c.border">{curso} | ${act.lugar}</div>
                     ${infoHora}
                     <div class="text-[8px] mt-0.5 text-slate-700 truncate w-full px-1 text-center font-medium"><i class="fas fa-user text-[7px] text-slate-400"></i> ${act.docente}</div>
                 </div>`;
           } else { 
                 if(!baseAsig) return ''; 
                 let salaText = window.checkEsEdFisica(baseAsig) ? 'Gimnasio' : (window.detallesCursos[curso]?.sala || 'Sin sala');
-                return `<div class="w-full h-full rounded border border-dashed border-slate-300 bg-transparent flex justify-center items-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-300 transition-colors group p-1" onclick="window.prepararAgendamientoDirecto('', '${dateStr}', '${jor || window.getJornadaActiva()}', ${bIdx}, '${baseAsig}', '${curso}')">
-                    <span class="font-bold text-slate-500 text-[10px] text-center group-hover:hidden leading-tight">${baseAsig}<br><span class="text-[8px] font-normal text-slate-400">${salaText}</span></span>
+                return `<div class="w-full h-full rounded border border-dashed border-slate-300 bg-transparent flex justify-center items-center cursor-pointer hover:bg-indigo-50 hover:border-indigo-300 transition-colors group p-1" onclick="window.prepararAgendamientoDirecto('', 'dateStr','{jor || window.getJornadaActiva()}', bIdx,'{baseAsig}', '${curso}')">
+                    <span class="font-bold text-slate-500 text-[10px] text-center group-hover:hidden leading-tight">baseAsig<br><spanclass="text-[8px]font-normaltext-slate-400">{salaText}</span></span>
                     <span class="hidden group-hover:block font-bold text-indigo-600 text-[10px]">Agendar</span>
                 </div>`; 
             }
@@ -3790,7 +3670,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                 let c = getColoresAsignatura(act.asignatura); 
                 let i = act.lugar.includes('Comp') ? 'fa-laptop' : act.lugar.includes('Lab') ? 'fa-flask' : 'fa-thumbtack'; 
                 let extraStyles = act.estado === 'espera' ? 'bg-amber-100 border-amber-300 text-amber-800' : `${c.bg} ${c.border} ${c.text}`;
-                return `<span onclick="window.abrirModalDetalle('${act.id}', '${curso}_${act.fecha}_${act.bloqueJornada}')" class="font-bold border px-1 rounded cursor-pointer block w-full text-center ${extraStyles} truncate" title="${act.nombre} en ${act.lugar} por ${act.docente}"><i class="fas ${i} opacity-60 mr-1"></i>${act.asignatura}</span>`; 
+                return `<span onclick="window.abrirModalDetalle('act.id','{curso}_${act.fecha}_${act.bloqueJornada}')" class="font-bold border px-1 rounded cursor-pointer block w-full text-center extraStylestruncate"title="{act.nombre} en ${act.lugar} por ${act.docente}"><i class="fas iopacity-60mr-1"></i>{act.asignatura}</span>`; 
             }
             
             if (!base) return ''; 
@@ -3813,13 +3693,13 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                 if (overlap.overlap) {
                     baseText = `<i class="fas fa-exclamation-triangle mr-1 text-rose-600"></i><span class="text-rose-700">Choque de Sala</span>`;
                     stylesBase = 'bg-rose-100 border-rose-400 text-rose-800';
-                    return `<span class="font-bold border px-1 rounded block w-full text-center truncate cursor-pointer transition-transform hover:scale-105 ${stylesBase}" onclick="window.prepararAgendamientoDirecto('', '${dateStr}', '${jorUse}', ${bIdx}, '${base}', '${curso}', true)" title="Colisión. Clic para Mover de Sala">${baseText}</span>`;
+                    return `<span class="font-bold border px-1 rounded block w-full text-center truncate cursor-pointer transition-transform hover:scale-105 stylesBase"onclick="window.prepararAgendamientoDirecto('','{dateStr}', '${jorUse}', bIdx,'{base}', 'curso',true)"title="Colisión.ClicparaMoverdeSala">{baseText}</span>`;
                 } else {
-                    baseText = `<i class="fas ${iconBase} mr-1 opacity-60"></i>${base}`;
+                    baseText = `<i class="fas iconBasemr-1opacity-60"></i>{base}`;
                 }
             }
             
-            return `<span class="font-bold border px-1 rounded block w-full text-center truncate cursor-pointer transition-transform hover:scale-105 ${stylesBase}" onclick="window.prepararAgendamientoDirecto('', '${dateStr}', '${jorUse}', ${bIdx}, '${base}', '${curso}')" title="Clic para cambiar sala/agendar">${baseText}</span>`;
+            return `<span class="font-bold border px-1 rounded block w-full text-center truncate cursor-pointer transition-transform hover:scale-105 stylesBase"onclick="window.prepararAgendamientoDirecto('','{dateStr}', '${jorUse}', bIdx,'{base}', 'curso')"title="Clicparacambiarsala/agendar">{baseText}</span>`;
         }
 
 
@@ -3839,9 +3719,9 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
             let selLugarUI = document.getElementById('rapidoSelectLugarUI');
             let htmlLugarUI = '<option value="Sala de Clases">Sala Base del Curso</option>';
             htmlLugarUI += '<optgroup label="Recintos Especiales">';
-            window.recintosDelEdificio().forEach(r => htmlLugarUI += `<option value="${r.id}">${r.nombre}</option>`);
+            window.recintosDelEdificio().forEach(r => htmlLugarUI += `<option value="r.id">{r.nombre}</option>`);
             htmlLugarUI += '</optgroup><optgroup label="Salas de Clases">';
-            window.salasDelEdificio().forEach(s => htmlLugarUI += `<option value="${s.id}">${s.nombre}</option>`);
+            window.salasDelEdificio().forEach(s => htmlLugarUI += `<option value="s.id">{s.nombre}</option>`);
             htmlLugarUI += '</optgroup><option value="Solo Recursos">Solo Materiales (Sin Sala)</option>';
             selLugarUI.innerHTML = htmlLugarUI;
 
@@ -3866,17 +3746,17 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
             if(window.userRoleLabel !== 'DOCENTE') {
                 document.getElementById('containerRapidoDocente').classList.remove('hidden');
                 let htmlDoc = '<option value="">-- Seleccionar Docente --</option>';
-                window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => htmlDoc += `<option value="${d.nombre}">${d.nombre}</option>`);
+                window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => htmlDoc += `<option value="d.nombre">{d.nombre}</option>`);
                 selDocente.innerHTML = htmlDoc;
                 selDocente.value = window.userName;
             } else {
                 document.getElementById('containerRapidoDocente').classList.add('hidden');
-                selDocente.innerHTML = `<option value="${window.userName}">${window.userName}</option>`;
+                selDocente.innerHTML = `<option value="window.userName">{window.userName}</option>`;
             }
 
             let fDate = window.parseInputDate(fecha);
             let lblJor = jornada === 'unica' ? 'Jornada Continua' : (jornada === 'manana' ? 'Mañana' : 'Tarde');
-            document.getElementById('rapidoResumen').innerHTML = alertHtml + `<i class="fas fa-calendar-day text-indigo-500"></i> ${fDate.getDate()}/${fDate.getMonth()+1} - ${lblJor} Módulo ${bIdx+1}<br><i class="fas fa-map-marker-alt text-red-400 mt-1"></i> ${isOverlap ? 'Reubicar curso a otra sala' : (lugarId ? lugarId : 'Sala Base')}`;
+            document.getElementById('rapidoResumen').innerHTML = alertHtml + `<i class="fas fa-calendar-day text-indigo-500"></i> fDate.getDate()/{fDate.getMonth()+1} - ${lblJor} Módulo ${bIdx+1}<br><i class="fas fa-map-marker-alt text-red-400 mt-1"></i> ${isOverlap ? 'Reubicar curso a otra sala' : (lugarId ? lugarId : 'Sala Base')}`;
 
             let cursoDetectado = cursoDefault;
             
@@ -3893,7 +3773,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
             }
 
                         let htmlCursos = '<option value="">-- Seleccionar --</option>';
-            window.cursosDelEdificio().sort(window.ordenarCursos).forEach(c => htmlCursos += `<option value="${c}">${c}</option>`);
+            window.cursosDelEdificio().sort(window.ordenarCursos).forEach(c => htmlCursos += `<option value="c">{c}</option>`);
             htmlCursos += `<optgroup label="Electivos Multinivel">
                             <option value="ELECTIVO 1 (3° y 4° Medios)">Electivo 1 (3° y 4° Medios)</option>
                             <option value="ELECTIVO 2 (3° y 4° Medios)">Electivo 2 (3° y 4° Medios)</option>
@@ -3914,7 +3794,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                     else if(c.startsWith("ELECTIVO 4")) key = "Electivo 4";
                     
                     let opts = `<option value="">-- Seleccione Asignatura del ${key} --</option>`;
-                    window.asignaturasElectivos[key].forEach(s => opts += `<option value="${s}" ${val===s?'selected':''}>${s}</option>`);
+                    window.asignaturasElectivos[key].forEach(s => opts += `<option value="${s}" val===s?'selected':''>{s}</option>`);
                     containerAsig.innerHTML = `<label class="block text-xs font-bold text-slate-500 mb-1">Asignatura del Electivo</label><select id="rapidoAsignatura" class="w-full border border-slate-300 rounded p-2 text-sm focus:ring-1 focus:ring-indigo-500">${opts}</select>`;
                 } else {
                     let unicas = new Set();
@@ -3924,7 +3804,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                         if(window.horariosBase[cId].tarde) window.horariosBase[cId].tarde.forEach(f => f.forEach(a => { if(a && a.trim() !== "") unicas.add(a); }));
                     }
                     let opts = '<option value="">-- Seleccionar Asignatura --</option>';
-                    Array.from(unicas).sort().forEach(a => opts += `<option value="${a}" ${val===a?'selected':''}>${a}</option>`);
+                    Array.from(unicas).sort().forEach(a => opts += `<option value="${a}" val===a?'selected':''>{a}</option>`);
                     opts += `<option value="Actividad Especial" ${val==='Actividad Especial'?'selected':''}>Actividad Especial / Otra</option>`;
                     containerAsig.innerHTML = `<label class="block text-xs font-bold text-slate-500 mb-1">Asignatura</label><select id="rapidoAsignatura" class="w-full border border-slate-300 rounded p-2 text-sm focus:ring-1 focus:ring-indigo-500">${opts}</select>`;
                 }
@@ -3940,7 +3820,7 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
 
             let selRecurso = document.getElementById('rapidoSelectRecurso');
             let htmlRec = '<option value="">-- Catálogo --</option>';
-            window.catalogoRecursosDB.forEach(r => { htmlRec += `<option value="${r.id}">${r.nombre} (Dispo: ${r.stock})</option>`; });
+            window.catalogoRecursosDB.forEach(r => { htmlRec += `<option value="r.id">{r.nombre} (Dispo: ${r.stock})</option>`; });
             selRecurso.innerHTML = htmlRec;
             document.getElementById('rapidoCantRecurso').value = '1';
 
@@ -4052,8 +3932,8 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
                     let dFin = window.parseInputDate(fechaFin);
                     if(dActual > dFin) { window.showToast("La fecha final debe ser mayor.", "error"); return; }
                     
-                    window.customConfirm(`¿Generar reserva recurrente hasta el ${dFin.getDate()}/${dFin.getMonth()+1}?`, async () => {
-                                            let currentD = new Date(dActual);
+                    window.customConfirm(`¿Generar reserva recurrente hasta el dFin.getDate()/{dFin.getMonth()+1}?`, async () => {
+                        let currentD = new Date(dActual);
                         while(currentD <= dFin) {
                             let dStr = window.formatInputDate(currentD);
                             await window.ejecutarGuardado([curso], [{ curso: curso, fecha: dStr, jornada: jornada, bloque: bIdx, lugarReal: lugarFinal }], act, asig, lugarFinal, docente, duracion, false, estado, sharedGroupId, extraHoras);
@@ -4122,9 +4002,9 @@ window.getActividadesEnBloque = (dateStr, jornada, bIdx, curso = null) => {
             
             btn.classList.remove('hidden'); btn.classList.add('flex'); badge.innerText = pendientes;
                         if(window.esPerfilDocente()) {
-                btn.innerHTML = `<i class="fas fa-calendar-check text-indigo-500"></i> Mis Reservas <span id="badgePedidos" class="${pendientes > 0 ? 'bg-amber-500' : 'bg-indigo-500'} text-white rounded-full px-1.5 py-0.5 text-[9px]">${pendientes}</span>`;
+                btn.innerHTML = `<i class="fas fa-calendar-check text-indigo-500"></i> Mis Reservas <span id="badgePedidos" class="pendientes>0?'bg-amber-500':'bg-indigo-500'text-whiterounded-fullpx-1.5py-0.5text-[9px]">{pendientes}</span>`;
             } else {
-                btn.innerHTML = `<i class="fas fa-bell ${pendientes > 0 ? 'animate-pulse text-rose-500' : 'text-slate-500'}"></i> Pedidos <span id="badgePedidos" class="${pendientes > 0 ? 'bg-rose-500' : 'bg-slate-500'} text-white rounded-full px-1.5 py-0.5 text-[9px]">${pendientes}</span>`;
+                btn.innerHTML = `<i class="fas fa-bell pendientes>0?'animate-pulsetext-rose-500':'text-slate-500'"></i>Pedidos<spanid="badgePedidos"class="{pendientes > 0 ? 'bg-rose-500' : 'bg-slate-500'} text-white rounded-full px-1.5 py-0.5 text-[9px]">${pendientes}</span>`;
             }
         }
 
@@ -4196,7 +4076,7 @@ window.switchPedidosTab = (tab) => {
             let recursoEntregado = (act.recursos || []).some(r => r.estado === 'prestado' || r.estado === 'devuelto');
             let btnAnular = '';
             if ((window.puedeGestionar() || (isDoc && esMia)) && !recursoEntregado) {
-                btnAnular = `<button onclick="window.eliminarReservaPropia('${act.idGrupo}', '${act.id}', '${act.curso}')" class="text-rose-600 hover:text-rose-800 text-[10px] font-bold ml-3"><i class="fas fa-trash-alt"></i> Eliminar</button>`;
+                btnAnular = `<button onclick="window.eliminarReservaPropia('act.idGrupo','{act.id}', '${act.curso}')" class="text-rose-600 hover:text-rose-800 text-[10px] font-bold ml-3"><i class="fas fa-trash-alt"></i> Eliminar</button>`;
             } else if (isDoc && esMia && act.estado !== 'anulacion_solicitada') {
                 btnAnular = `<button onclick="window.anularReservaDirecta('${act.idGrupo}')" class="text-orange-600 hover:text-orange-800 text-[10px] font-bold ml-3"><i class="fas fa-hand-paper"></i> Solicitar anulación</button>`;
             }
@@ -4204,7 +4084,7 @@ window.switchPedidosTab = (tab) => {
             
             let destinoHTML = `<span class="font-bold text-indigo-700">${act.curso}</span> <i class="fas fa-arrow-right text-[8px] mx-1 text-slate-400"></i> ${act.lugar}<br><span class="text-[9px] text-slate-500 font-normal">Act: ${act.nombre}</span>`;
 
-            htmlEspacios += `<tr class="hover:bg-slate-50"><td class="p-3 border-b border-slate-100 whitespace-nowrap"><span class="font-bold text-slate-700">${dias[f.getDay()-1]} ${f.getDate()}/${f.getMonth()+1}</span><br><span class="text-[9px] text-slate-500">${lblJor}-Mód ${parseInt(act.bloque)+1}</span></td><td class="p-3 border-b border-slate-100 font-bold text-slate-800">${act.docente}</td><td class="p-3 border-b border-slate-100">${destinoHTML}</td><td class="p-3 border-b border-slate-100">${stBadge}</td><td class="p-3 border-b border-slate-100 text-center"><button onclick="window.abrirModalDetalle('${act.id}', '${act.curso}_${act.fecha}_${act.bloqueJornada}')" class="text-indigo-500 hover:text-indigo-700 text-[10px] font-bold"><i class="fas fa-search"></i> Ver</button>${btnAnular}</td></tr>`;
+            htmlEspacios += `<tr class="hover:bg-slate-50"><td class="p-3 border-b border-slate-100 whitespace-nowrap"><span class="font-bold text-slate-700">${dias[f.getDay()-1]} f.getDate()/{f.getMonth()+1}</span><br><span class="text-[9px] text-slate-500">${lblJor}-Mód parseInt(act.bloque)+1</span></td><tdclass="p-3border-bborder-slate-100font-boldtext-slate-800">{act.docente}</td><td class="p-3 border-b border-slate-100">destinoHTML</td><tdclass="p-3border-bborder-slate-100">{stBadge}</td><td class="p-3 border-b border-slate-100 text-center"><button onclick="window.abrirModalDetalle('act.id','{act.curso}_${act.fecha}_${act.bloqueJornada}')" class="text-indigo-500 hover:text-indigo-700 text-[10px] font-bold"><i class="fas fa-search"></i> Ver</button>${btnAnular}</td></tr>`;
         });
     }
 
@@ -4222,16 +4102,16 @@ window.switchPedidosTab = (tab) => {
                 let stBadge = ''; let btnAction = ''; 
                 if(r.estado === 'pendiente') { 
                     stBadge = `<span class="bg-amber-100 text-amber-700 px-1 rounded border border-amber-300 text-[9px]"><i class="fas fa-clock"></i> Pendiente</span>`; 
-                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('${act.curso}', '${act.id}', ${idx}, 'ok')" class="bg-emerald-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-emerald-600 shadow w-full">Aprobar OK</button>`; 
+                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('act.curso','{act.id}', ${idx}, 'ok')" class="bg-emerald-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-emerald-600 shadow w-full">Aprobar OK</button>`; 
                 } else if (r.estado === 'espera') { 
                     stBadge = `<span class="bg-rose-100 text-rose-700 px-1 rounded border border-rose-300 text-[9px]"><i class="fas fa-list-ol"></i> Lista Espera</span>`; 
-                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('${act.curso}', '${act.id}', ${idx}, 'ok')" class="bg-rose-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-rose-600 shadow w-full">Forzar OK</button>`; 
+                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('act.curso','{act.id}', ${idx}, 'ok')" class="bg-rose-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-rose-600 shadow w-full">Forzar OK</button>`; 
                 } else if (r.estado === 'ok') { 
                     stBadge = `<span class="bg-emerald-100 text-emerald-700 px-1 rounded border border-emerald-300 text-[9px]"><i class="fas fa-check"></i> Listo (${r.aprobadoPor})</span>`; 
-                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('${act.curso}', '${act.id}', ${idx}, 'prestado')" class="bg-blue-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-blue-600 shadow w-full">Entregar</button>`; 
+                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('act.curso','{act.id}', ${idx}, 'prestado')" class="bg-blue-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-blue-600 shadow w-full">Entregar</button>`; 
                 } else if (r.estado === 'prestado') {
                     stBadge = `<span class="bg-blue-100 text-blue-700 px-1 rounded border border-blue-300 text-[9px]">En Uso</span>`; 
-                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('${act.curso}', '${act.id}', ${idx}, 'devuelto')" class="bg-indigo-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-indigo-600 shadow w-full">Recibir</button>`; 
+                    if(!isDoc) btnAction = `<button onclick="window.cambiarEstadoRecurso('act.curso','{act.id}', ${idx}, 'devuelto')" class="bg-indigo-500 text-white px-2 py-1 rounded text-[9px] font-bold hover:bg-indigo-600 shadow w-full">Recibir</button>`; 
                 } else if (r.estado === 'devuelto') {
                     stBadge = `<span class="bg-slate-100 text-slate-600 px-1 rounded border border-slate-300 text-[9px]">Devuelto</span>`; 
                     if(!isDoc) btnAction = `<span class="text-[9px] text-slate-400 font-bold block text-center">Finalizado</span>`;
@@ -4244,9 +4124,9 @@ window.switchPedidosTab = (tab) => {
                 destino += `<br><span class="text-[9px] text-slate-500 font-normal">Act: ${act.nombre}</span>`;
 
                 let claveUiCorrecta = act.bloqueJornada === 'recurso_hora' ? `${act.curso}_${act.fecha}_${act.bloqueJornada}_${act.id}` : `${act.curso}_${act.fecha}_${act.bloqueJornada}`;
-                let btnVer = `<button onclick="window.abrirModalDetalle('${act.id}', '${claveUiCorrecta}')" class="text-indigo-600 bg-indigo-50 hover:bg-indigo-600 border border-indigo-200 px-2 py-1 rounded text-[9px] font-bold shadow-sm w-full transition-colors mb-1">Ver Info</button>`;
+                let btnVer = `<button onclick="window.abrirModalDetalle('act.id','{claveUiCorrecta}')" class="text-indigo-600 bg-indigo-50 hover:bg-indigo-600 border border-indigo-200 px-2 py-1 rounded text-[9px] font-bold shadow-sm w-full transition-colors mb-1">Ver Info</button>`;
                 
-                htmlRecursos += `<tr class="hover:bg-slate-50"><td class="p-3 border-b border-slate-100 whitespace-nowrap"><span class="font-bold text-slate-700">${dias[f.getDay()-1]} ${f.getDate()}/${f.getMonth()+1}</span><br><span class="text-[9px] text-slate-500">${lblJor}-${strBloq}</span></td><td class="p-3 border-b border-slate-100 font-bold text-slate-800">${act.docente}</td><td class="p-3 border-b border-slate-100"><span class="font-bold text-teal-700">${r.cantidad}x <i class="fas ${rIcon}"></i> ${r.nombre}</span><br><div class="mt-1">${stBadge}</div></td><td class="p-3 border-b border-slate-100 font-medium text-slate-600">${destino}</td><td class="p-3 border-b border-slate-100 text-center align-middle w-28">${btnVer}${btnAction}</td></tr>`; 
+                htmlRecursos += `<tr class="hover:bg-slate-50"><td class="p-3 border-b border-slate-100 whitespace-nowrap"><span class="font-bold text-slate-700">${dias[f.getDay()-1]} f.getDate()/{f.getMonth()+1}</span><br><span class="text-[9px] text-slate-500">lblJor-{strBloq}</span></td><td class="p-3 border-b border-slate-100 font-bold text-slate-800">act.docente</td><tdclass="p-3border-bborder-slate-100"><spanclass="font-boldtext-teal-700">{r.cantidad}x <i class="fas ${rIcon}"></i> r.nombre</span><br><divclass="mt-1">{stBadge}</div></td><td class="p-3 border-b border-slate-100 font-medium text-slate-600">destino</td><tdclass="p-3border-bborder-slate-100text-centeralign-middlew-28">{btnVer}${btnAction}</td></tr>`; 
             });
         });
     }
@@ -4314,7 +4194,7 @@ window.switchPedidosTab = (tab) => {
                     let lblJor = act.jornada === 'manana' ? 'Mañana' : 'Tarde';
                     
                     // Cálculo de Hora, Actividad y Lugar
-                    let horaStr = act.bloque === 99 ? `${act.horaInicio} a ${act.horaFin}` : `Módulo ${parseInt(act.bloque)+1} (${lblJor})`;
+                    let horaStr = act.bloque === 99 ? `${act.horaInicio} a ${act.horaFin}` : `Módulo parseInt(act.bloque)+1({lblJor})`;
                     let lugarTxt = act.lugar === 'Solo Recursos' ? 'Sin Sala' : act.lugar;
                     let infoUbicacion = `${act.curso} en ${lugarTxt}\nActividad: ${act.nombre}`;
 
@@ -4363,14 +4243,14 @@ window.switchPedidosTab = (tab) => {
                         if(r.estado === 'ok') aprobadosTotales++; else pendientesTotales++;
                         
                         let resDate = window.parseInputDate(act.fecha);
-                        let fechaFormateada = `${resDate.getDate().toString().padStart(2,'0')}/${(resDate.getMonth()+1).toString().padStart(2,'0')}/${resDate.getFullYear()}`;
+                        let fechaFormateada = `resDate.getDate().toString().padStart(2,'0')/{(resDate.getMonth()+1).toString().padStart(2,'0')}/${resDate.getFullYear()}`;
                         
                         let lblJor = act.jornada === 'manana' ? 'Mañana' : 'Tarde';
-                        let horaStr = act.bloque === 99 ? `${act.horaInicio} a ${act.horaFin}` : `Módulo ${parseInt(act.bloque)+1} (${lblJor})`;
+                        let horaStr = act.bloque === 99 ? `${act.horaInicio} a ${act.horaFin}` : `Módulo parseInt(act.bloque)+1({lblJor})`;
                         let lugarTxt = act.lugar === 'Solo Recursos' ? 'Sin Sala' : act.lugar;
                         let infoUbicacion = `${act.curso} en ${lugarTxt}\nActividad: ${act.nombre}`;
 
-                        datosRecursos.push([`${fechaFormateada}\n${horaStr}`, `${act.docente}`, infoUbicacion, `${r.cantidad}x ${r.nombre}`, estadoTexto]);
+                        datosRecursos.push([`${fechaFormateada}\n${horaStr}`, `act.docente`,infoUbicacion,`{r.cantidad}x ${r.nombre}`, estadoTexto]);
                     });
                 }
             }
@@ -4494,8 +4374,8 @@ window.switchPedidosTab = (tab) => {
             
             let html = ''; filtradas.forEach(act => { 
                 let f = window.parseInputDate(act.fecha); let lblJor = act.jornada === 'manana' ? 'MAÑ' : 'TAR'; 
-                let infoCol5 = isCurso ? `<span class="bg-indigo-50 text-indigo-700 px-1 rounded font-bold mr-1"><i class="fas fa-map-marker-alt"></i> ${act.lugar}</span>` : `<span class="bg-indigo-50 text-indigo-700 px-1 rounded font-bold mr-1">${act.curso}</span> ${act.asignatura}`;
-                html += `<tr class="hover:bg-slate-50"><td class="p-2 border-b border-slate-100">${dias[f.getDay()-1]} ${f.getDate()}/${f.getMonth()+1}</td><td class="p-2 border-b border-slate-100 text-center font-bold text-slate-600">${lblJor}-M${act.bloque+1}</td><td class="p-2 border-b border-slate-100 font-bold">${act.docente}</td><td class="p-2 border-b border-slate-100">${act.nombre}</td><td class="p-2 border-b border-slate-100">${infoCol5}</td></tr>`; 
+                let infoCol5 = isCurso ? `<span class="bg-indigo-50 text-indigo-700 px-1 rounded font-bold mr-1"><i class="fas fa-map-marker-alt"></i> act.lugar</span>`:`<spanclass="bg-indigo-50text-indigo-700px-1roundedfont-boldmr-1">{act.curso}</span> ${act.asignatura}`;
+                html += `<tr class="hover:bg-slate-50"><td class="p-2 border-b border-slate-100">${dias[f.getDay()-1]} f.getDate()/{f.getMonth()+1}</td><td class="p-2 border-b border-slate-100 text-center font-bold text-slate-600">lblJor-M{act.bloque+1}</td><td class="p-2 border-b border-slate-100 font-bold">act.docente</td><tdclass="p-2border-bborder-slate-100">{act.nombre}</td><td class="p-2 border-b border-slate-100">${infoCol5}</td></tr>`; 
             }); 
             tbody.innerHTML = html;
         }
@@ -4513,7 +4393,7 @@ window.switchPedidosTab = (tab) => {
             doc.save(`Reporte_${filtroTexto.replace(/ /g, '_')}.pdf`); 
             window.showToast("PDF Generado con firmas."); 
         }
-        
+
         const generarPDFGanttCentralizado = (vista, label, isReport = false) => {
             const { jsPDF } = window.jspdf; 
             const doc = new jsPDF({ orientation: 'landscape', format: 'legal' }); 
@@ -4530,7 +4410,7 @@ window.switchPedidosTab = (tab) => {
 
                 let data = [];
                 let headRow = ['Horario'];
-                weekDates.forEach((d, i) => headRow.push(`${dias[i].toUpperCase()} ${d.getDate()}/${d.getMonth()+1}`));
+                weekDates.forEach((d, i) => headRow.push(`${dias[i].toUpperCase()} d.getDate()/{d.getMonth()+1}`));
 
                 data.push([{content: `JORNADA ${labelJornada.toUpperCase()}`, colSpan: 6, styles: {fillColor: [71, 85, 105], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', fontSize: 10, cellPadding: 2}}]);
                 
@@ -4745,7 +4625,7 @@ window.switchPedidosTab = (tab) => {
                 document.getElementById('panelAgendamiento').classList.remove('hidden');
                 
                document.getElementById('admin-alert').classList.remove('hidden'); 
-                document.getElementById('admin-role-label').innerText = `${window.userRoleLabel} (${window.userName})`; 
+                document.getElementById('admin-role-label').innerText = `window.userRoleLabel({window.userName})`; 
                 
                 document.getElementById('btnAdminLoginTop').innerHTML = `<span onclick="window.cerrarAdmin();" class="cursor-pointer hover:text-rose-600"><i class="fas fa-sign-out-alt"></i> Salir</span>`;
                 document.getElementById('btnAdminLoginTop').onclick = null;
@@ -4912,8 +4792,8 @@ window.guardarBannerInstitucional = async () => {
             let html = '';
             const bloque = (titulo, recintos, salas) => {
                 let h = `<div class="text-[10px] font-black uppercase text-orange-700 bg-orange-100 rounded px-2 py-1 mt-2 mb-1">${titulo}</div>`;
-                recintos.forEach(r => h += `<label class="flex items-center gap-2"><input type="checkbox" class="chk-user-esp" value="${r.id}"> <span class="text-emerald-800 font-bold">${r.nombre}</span></label>`);
-                salas.forEach(s => h += `<label class="flex items-center gap-2"><input type="checkbox" class="chk-user-esp" value="${s.id}"> <span class="text-slate-600">${s.nombre}</span></label>`);
+                recintos.forEach(r => h += `<label class="flex items-center gap-2"><input type="checkbox" class="chk-user-esp" value="r.id"><spanclass="text-emerald-800font-bold">{r.nombre}</span></label>`);
+                salas.forEach(s => h += `<label class="flex items-center gap-2"><input type="checkbox" class="chk-user-esp" value="s.id"><spanclass="text-slate-600">{s.nombre}</span></label>`);
                 return h;
             };
             html += bloque('Edificio Matriz', window.recintosDisponibles.filter(r => (r.edificio || 'MATRIZ') === 'MATRIZ'), window.salasPredeterminadas);
@@ -5012,7 +4892,7 @@ window.guardarBannerInstitucional = async () => {
             let hA = '', hE = '', hD = '', hAsi = '';
             let contD = 0, contAsi = 0;
             window.usuariosTotales.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(u => {
-                let row = `<li class="flex justify-between items-center bg-white border border-slate-100 p-2 rounded-lg shadow-sm hover:border-orange-200"><div class="flex flex-col cursor-pointer flex-1" onclick="window.editarUsuarioBD('${u.nombre}')"><span class="font-bold text-slate-700 text-sm">${u.nombre}</span><span class="text-[10px] text-slate-400 font-mono">Clave: ${u.clave} ${u.espacios ? '| Espacios: '+u.espacios.length : ''}</span></div><button onclick="window.eliminarUsuarioBD('${u.nombre}')" class="text-rose-400 hover:text-rose-600 px-2"><i class="fas fa-trash-alt"></i></button></li>`;
+                let row = `<li class="flex justify-between items-center bg-white border border-slate-100 p-2 rounded-lg shadow-sm hover:border-orange-200"><div class="flex flex-col cursor-pointer flex-1" onclick="window.editarUsuarioBD('u.nombre')"><spanclass="font-boldtext-slate-700text-sm">{u.nombre}</span><span class="text-[10px] text-slate-400 font-mono">Clave: ${u.clave} u.espacios?'|Espacios:'+u.espacios.length:''</span></div><buttononclick="window.eliminarUsuarioBD('{u.nombre}')" class="text-rose-400 hover:text-rose-600 px-2"><i class="fas fa-trash-alt"></i></button></li>`;
                 if(u.rol === 'admin') hA += row;
                 else if(u.rol === 'encargado') hE += row;
                 else if(u.rol === 'asistente') { hAsi += row; contAsi++; }
@@ -5025,7 +4905,7 @@ window.guardarBannerInstitucional = async () => {
             document.getElementById('contadorDocentes').innerText = contD;
             if(document.getElementById('contadorAsistentes')) document.getElementById('contadorAsistentes').innerText = contAsi;
         }
-        
+
         window.guardarNuevoCurso = async () => { 
             let nom = document.getElementById('nuevoCursoInput').value.trim().toUpperCase(); 
             let ciclo = document.getElementById('nuevoCursoCiclo').value;
@@ -5041,7 +4921,7 @@ window.guardarBannerInstitucional = async () => {
                 nd[nom] = { alumnos: 0, sala: sala, jornada: 'ambas', ciclo: ciclo, edificio: edif };
                 await setDoc(dbDoc('config', 'cursos'), { lista: nc, detalles: nd }); 
                 document.getElementById('nuevoCursoInput').value = ''; 
-                window.showToast(`Curso creado en ${window.nombresEdificios[edif]}${sala ? ' · Sala: ' + sala : ''}.`); 
+                window.showToast(`Curso creado en window.nombresEdificios[edif]{sala ? ' · Sala: ' + sala : ''}.`); 
             } catch(e){ window.showToast("Error al crear el curso.", "error"); } 
         }
         window.eliminarCurso = (curso) => { window.customConfirm(`¿Eliminar curso ${curso}?`, async () => { try { let nc = window.cursosDisponibles.filter(c => c !== curso); let nd = { ...window.detallesCursos }; delete nd[curso]; await setDoc(dbDoc('config', 'cursos'), { lista: nc, detalles: nd }); window.showToast("Curso eliminado."); } catch(e){} }); }
@@ -5112,7 +4992,7 @@ window.guardarBannerInstitucional = async () => {
                             ${!isActivo ? '<span class="ml-2 text-[10px] bg-slate-200 px-2 py-0.5 rounded text-slate-600">Oculto</span>' : ''}
                         </span>
                         <div class="flex gap-4">
-                            <button onclick="window.alternarVisibilidadRecinto('${r.id}', ${isActivo})" class="${ojoClass}" title="Ocultar/Mostrar"><i class="fas ${ojoIcon}"></i></button>
+                            <button onclick="window.alternarVisibilidadRecinto('${r.id}', isActivo)"class="{ojoClass}" title="Ocultar/Mostrar"><i class="fas ${ojoIcon}"></i></button>
                             <button onclick="window.eliminarRecinto('${r.id}')" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </li>`; 
@@ -5122,7 +5002,7 @@ window.guardarBannerInstitucional = async () => {
             if (lista) lista.innerHTML = html || '<li class="text-sm text-emerald-600/50 p-2">Vacío.</li>'; 
         }
         
-window.renderCatalogoAdmin = () => { const cont = document.getElementById('adminCatalogoContenedor'); if(!cont) return; cont.innerHTML = ''; let agrupado = {}; window.catalogoDelEdificio().forEach(r => { if(!agrupado[r.area]) agrupado[r.area] = []; agrupado[r.area].push(r); }); let areasAVisualizar = new Set(Object.keys(agrupado)); window.recintosDelEdificio().forEach(r => areasAVisualizar.add(r.nombre)); areasAVisualizar.add('General'); Array.from(areasAVisualizar).forEach(area => { if (window.userRoleLabel === 'ENCARGADO') { let esAreaDelEncargado = window.encargadoLugares.some(lugarId => { let r = window.recintosDisponibles.find(rec => rec.id === lugarId); return r && r.nombre === area; }); if (!esAreaDelEncargado && area !== 'General') return; } let html = `<div class="bg-white p-4 rounded-xl border border-teal-100"><h4 class="font-bold text-sm text-teal-800 mb-3 border-b border-teal-50 pb-2">${area}</h4><ul class="space-y-2">`; if(agrupado[area] && agrupado[area].length > 0) { agrupado[area].forEach(r => { html += `<li class="flex justify-between items-center text-sm bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="font-medium">${r.stock}x ${r.nombre}</span><button onclick="window.eliminarRecursoCatalogo('${r.id}')" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash-alt"></i></button></li>`; }); } else { html += `<li class="text-sm text-slate-400 italic">Vacío</li>`; } html += `</ul></div>`; cont.innerHTML += html; }); }
+window.renderCatalogoAdmin = () => { const cont = document.getElementById('adminCatalogoContenedor'); if(!cont) return; cont.innerHTML = ''; let agrupado = {}; window.catalogoDelEdificio().forEach(r => { if(!agrupado[r.area]) agrupado[r.area] = []; agrupado[r.area].push(r); }); let areasAVisualizar = new Set(Object.keys(agrupado)); window.recintosDelEdificio().forEach(r => areasAVisualizar.add(r.nombre)); areasAVisualizar.add('General'); Array.from(areasAVisualizar).forEach(area => { if (window.userRoleLabel === 'ENCARGADO') { let esAreaDelEncargado = window.encargadoLugares.some(lugarId => { let r = window.recintosDisponibles.find(rec => rec.id === lugarId); return r && r.nombre === area; }); if (!esAreaDelEncargado && area !== 'General') return; } let html = `<div class="bg-white p-4 rounded-xl border border-teal-100"><h4 class="font-bold text-sm text-teal-800 mb-3 border-b border-teal-50 pb-2">${area}</h4><ul class="space-y-2">`; if(agrupado[area] && agrupado[area].length > 0) { agrupado[area].forEach(r => { html += `<li class="flex justify-between items-center text-sm bg-slate-50 p-2 rounded-lg border border-slate-100"><span class="font-medium">${r.stock}x r.nombre</span><buttononclick="window.eliminarRecursoCatalogo('{r.id}')" class="text-rose-500 hover:text-rose-700"><i class="fas fa-trash-alt"></i></button></li>`; }); } else { html += `<li class="text-sm text-slate-400 italic">Vacío</li>`; } html += `</ul></div>`; cont.innerHTML += html; }); }
         window.guardarNuevoRecursoCatalogo = async () => { 
             let nom = document.getElementById('nuevoRecursoInput').value.trim(); 
             let area = document.getElementById('areaRecursoInput').value; 
@@ -5194,7 +5074,7 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
             let html = '';
             arr.sort((a,b) => window.parseInputDate(a.fecha) - window.parseInputDate(b.fecha)).forEach((f, idx) => {
                 let d = window.parseInputDate(f.fecha);
-                let str = `${dias[d.getDay()-1]} ${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()}`;
+                let str = `${dias[d.getDay()-1]} d.getDate()/{d.getMonth()+1}/${d.getFullYear()}`;
                 html += `<div class="bg-white border border-rose-200 p-2 rounded-lg flex justify-between items-center shadow-sm">
                             <div class="flex flex-col">
                                 <span class="font-bold text-rose-800 text-xs">${str}</span>
@@ -5247,12 +5127,12 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
 
  
         // ======================= EDITOR DE HORARIOS BASE =======================
-        window.cargarEditorHorario = () => { const selCurso = document.getElementById('adminHorarioCurso'); const selJor = document.getElementById('adminHorarioJornada'); const btn = document.getElementById('btnGuardarHorarioNuevo'); const titulo = document.getElementById('tituloGrillaEditor'); const tbody = document.getElementById('adminHorarioTbody'); if(!selCurso || !selCurso.value) { if (btn) { btn.innerHTML = `<i class="fas fa-save mr-2"></i> Seleccione un curso para guardar`; btn.disabled = true; } return; } const curso = selCurso.value; const jornada = selJor.value; const cursoIdSeguro = window.getCursoIdSeguro(curso); if (btn) { btn.innerHTML = `<i class="fas fa-save mr-2"></i> Guardar Horario (${curso} - ${jornada === 'manana' ? 'Mañana' : 'Tarde'})`; btn.disabled = false; btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700'); btn.classList.add('bg-amber-600', 'hover:bg-amber-700'); } titulo.innerText = `Editando: Curso ${curso} | Jornada ${jornada === 'manana' ? 'Mañana' : 'Tarde'}`; titulo.className = `text-sm font-bold text-center mb-3 py-2 rounded-lg ${jornada === 'manana' ? 'text-amber-800 bg-amber-100' : 'text-indigo-800 bg-indigo-100'}`; const filas = jornada === 'manana' ? 8 : 7; let html = ''; for(let b=0; b<filas; b++) { html += `<tr><td class="border-r border-slate-200 p-1 font-bold text-center bg-white text-xs text-slate-400">M${b+1}</td>`; for(let d=0; d<5; d++) { let val = (window.horariosBase[cursoIdSeguro] && window.horariosBase[cursoIdSeguro][jornada] && window.horariosBase[cursoIdSeguro][jornada][b]) ? window.horariosBase[cursoIdSeguro][jornada][b][d] : ''; let focusColor = jornada === 'manana' ? 'amber' : 'indigo'; html += `<td class="border-r border-slate-200 p-0"><input type="text" id="h_editor_${b}_${d}" value="${val}" class="w-full h-full p-3 text-center text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-${focusColor}-500 bg-transparent placeholder:text-slate-300 placeholder:font-normal" placeholder="-" onpaste="window.handleGridPaste(event, ${b}, ${d})"></td>`; } html += `</tr>`; } tbody.innerHTML = html; }
+        window.cargarEditorHorario = () => { const selCurso = document.getElementById('adminHorarioCurso'); const selJor = document.getElementById('adminHorarioJornada'); const btn = document.getElementById('btnGuardarHorarioNuevo'); const titulo = document.getElementById('tituloGrillaEditor'); const tbody = document.getElementById('adminHorarioTbody'); if(!selCurso || !selCurso.value) { if (btn) { btn.innerHTML = `<i class="fas fa-save mr-2"></i> Seleccione un curso para guardar`; btn.disabled = true; } return; } const curso = selCurso.value; const jornada = selJor.value; const cursoIdSeguro = window.getCursoIdSeguro(curso); if (btn) { btn.innerHTML = `<i class="fas fa-save mr-2"></i> Guardar Horario (${curso} - ${jornada === 'manana' ? 'Mañana' : 'Tarde'})`; btn.disabled = false; btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700'); btn.classList.add('bg-amber-600', 'hover:bg-amber-700'); } titulo.innerText = `Editando: Curso ${curso} | Jornada ${jornada === 'manana' ? 'Mañana' : 'Tarde'}`; titulo.className = `text-sm font-bold text-center mb-3 py-2 rounded-lg ${jornada === 'manana' ? 'text-amber-800 bg-amber-100' : 'text-indigo-800 bg-indigo-100'}`; const filas = jornada === 'manana' ? 8 : 7; let html = ''; for(let b=0; b<filas; b++) { html += `<tr><td class="border-r border-slate-200 p-1 font-bold text-center bg-white text-xs text-slate-400">M${b+1}</td>`; for(let d=0; d<5; d++) { let val = (window.horariosBase[cursoIdSeguro] && window.horariosBase[cursoIdSeguro][jornada] && window.horariosBase[cursoIdSeguro][jornada][b]) ? window.horariosBase[cursoIdSeguro][jornada][b][d] : ''; let focusColor = jornada === 'manana' ? 'amber' : 'indigo'; html += `<td class="border-r border-slate-200 p-0"><input type="text" id="h_editor_${b}_${d}" value="val"class="w-fullh-fullp-3text-centertext-xsfont-boldtext-slate-700outline-nonefocus:ring-2focus:ring-{focusColor}-500 bg-transparent placeholder:text-slate-300 placeholder:font-normal" placeholder="-" onpaste="window.handleGridPaste(event, ${b}, ${d})"></td>`; } html += `</tr>`; } tbody.innerHTML = html; }
         window.handleGridPaste = (e, startRow, startCol) => { e.preventDefault(); const clipboardData = e.clipboardData || window.clipboardData; const pastedData = clipboardData.getData('Text'); if (!pastedData) return; const selJor = document.getElementById('adminHorarioJornada'); const jornada = selJor.value; const maxRows = jornada === 'manana' ? 8 : 7; const rows = pastedData.split(/\r\n|\n|\r/); for (let i = 0; i < rows.length; i++) { if (startRow + i >= maxRows) break; if (i === rows.length - 1 && rows[i].trim() === '') break; const cols = rows[i].split('\t'); for (let j = 0; j < cols.length; j++) { if (startCol + j >= 5) break; const input = document.getElementById(`h_editor_${startRow + i}_${startCol + j}`); if (input && cols[j] !== undefined) { input.value = cols[j].trim(); } } } window.showToast("Datos pegados. Revisa y presiona Guardar.", "success"); };
-        window.guardarHorarioBase = async () => { const btn = document.getElementById('btnGuardarHorarioNuevo'); const selCurso = document.getElementById('adminHorarioCurso'); const selJor = document.getElementById('adminHorarioJornada'); if(!selCurso || !selCurso.value) { window.showToast("Selecciona un curso primero.", "error"); return; } try { if(btn) { btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Guardando...`; btn.disabled = true; } const curso = selCurso.value; const jornada = selJor.value; const cursoIdSeguro = window.getCursoIdSeguro(curso); const filas = jornada === 'manana' ? 8 : 7; let matriz = []; for(let b=0; b<filas; b++) { let f = []; for(let d=0; d<5; d++) { let input = document.getElementById(`h_editor_${b}_${d}`); if(input) { f.push(input.value.trim()); } else { f.push(""); } } matriz.push(f); } const docRef = dbDoc('horarios_base', cursoIdSeguro); await setDoc(docRef, { [jornada]: JSON.stringify(matriz) }, { merge: true }); window.showToast(`Horario de ${curso} (${jornada === 'manana' ? 'Mañana' : 'Tarde'}) guardado exitosamente.`); if(btn) { btn.classList.remove('bg-amber-600', 'hover:bg-amber-700'); btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700'); btn.innerHTML = `<i class="fas fa-check mr-2"></i> ¡Guardado correctamente!`; setTimeout(() => { btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700'); btn.classList.add('bg-amber-600', 'hover:bg-amber-700'); btn.innerHTML = `<i class="fas fa-save mr-2"></i> Guardar Horario (${curso} - ${jornada === 'manana' ? 'Mañana' : 'Tarde'})`; btn.disabled = false; }, 2500); } } catch(e) { console.error("Error al guardar horario:", e); window.showToast("Error de conexión al guardar.", "error"); if(btn) { btn.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> Error. Reintentar`; btn.disabled = false; } } }
+        window.guardarHorarioBase = async () => { const btn = document.getElementById('btnGuardarHorarioNuevo'); const selCurso = document.getElementById('adminHorarioCurso'); const selJor = document.getElementById('adminHorarioJornada'); if(!selCurso || !selCurso.value) { window.showToast("Selecciona un curso primero.", "error"); return; } try { if(btn) { btn.innerHTML = `<i class="fas fa-spinner fa-spin mr-2"></i> Guardando...`; btn.disabled = true; } const curso = selCurso.value; const jornada = selJor.value; const cursoIdSeguro = window.getCursoIdSeguro(curso); const filas = jornada === 'manana' ? 8 : 7; let matriz = []; for(let b=0; b<filas; b++) { let f = []; for(let d=0; d<5; d++) { let input = document.getElementById(`h_editor_${b}_${d}`); if(input) { f.push(input.value.trim()); } else { f.push(""); } } matriz.push(f); } const docRef = dbDoc('horarios_base', cursoIdSeguro); await setDoc(docRef, { [jornada]: JSON.stringify(matriz) }, { merge: true }); window.showToast(`Horario de curso({jornada === 'manana' ? 'Mañana' : 'Tarde'}) guardado exitosamente.`); if(btn) { btn.classList.remove('bg-amber-600', 'hover:bg-amber-700'); btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700'); btn.innerHTML = `<i class="fas fa-check mr-2"></i> ¡Guardado correctamente!`; setTimeout(() => { btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700'); btn.classList.add('bg-amber-600', 'hover:bg-amber-700'); btn.innerHTML = `<i class="fas fa-save mr-2"></i> Guardar Horario (${curso} - ${jornada === 'manana' ? 'Mañana' : 'Tarde'})`; btn.disabled = false; }, 2500); } } catch(e) { console.error("Error al guardar horario:", e); window.showToast("Error de conexión al guardar.", "error"); if(btn) { btn.innerHTML = `<i class="fas fa-exclamation-triangle mr-2"></i> Error. Reintentar`; btn.disabled = false; } } }
 
         // ======================= LIMPIEZA MASIVA Y DETALLES =======================
-        window.renderListaMasivaAdmin = () => { const filtro = document.getElementById('filtroMasivoEstado').value; const tbody = document.getElementById('adminMasivoTbody'); document.getElementById('chkAllMasivo').checked = false; let acts = Object.values(window.actividadesProgramadas); if (filtro === 'solicitudes') { acts = acts.filter(a => a.estado === 'anulacion_solicitada'); } else if (filtro === 'espera') { acts = acts.filter(a => a.estado === 'espera'); } acts.sort((a, b) => new Date(a.fecha) - new Date(b.fecha)); if (acts.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 font-medium">Sin actividades para mostrar.</td></tr>`; return; } let html = ''; acts.forEach(act => { let f = window.parseInputDate(act.fecha); let estadoLabel = act.estado === 'espera' ? '<span class="text-amber-600 font-bold bg-amber-50 px-1 rounded"><i class="fas fa-hourglass-half"></i> Espera</span>' : (act.estado === 'anulacion_solicitada' ? '<span class="text-red-600 font-bold bg-red-50 px-1 rounded">Anular</span>' : '<span class="text-emerald-600 font-bold">Activa</span>'); html += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-3 text-center border-b border-slate-200"><input type="checkbox" class="chk-masivo w-4 h-4 text-red-600 rounded" data-id="${act.id}" data-curso="${act.curso}" data-grupo="${act.idGrupo}"></td><td class="p-3 border-b border-slate-200 text-xs">${estadoLabel}</td><td class="p-3 border-b border-slate-200">${dias[f.getDay()-1]} ${f.getDate()}/${f.getMonth()+1} M${act.bloque+1}</td><td class="p-3 border-b border-slate-200 font-bold">${act.curso}</td><td class="p-3 border-b border-slate-200">${act.nombre}</td><td class="p-3 border-b border-slate-200">${act.lugar}</td><td class="p-3 border-b border-slate-200">${act.docente}</td><td class="p-3 border-b border-slate-200"><button onclick="window.abrirModalDetalle('${act.id}', '${act.curso}_${act.fecha}_${act.bloqueJornada}')" class="text-indigo-500 hover:text-indigo-700 text-xs font-bold"><i class="fas fa-external-link-alt"></i> Ver</button></td></tr>`; }); tbody.innerHTML = html; };
+        window.renderListaMasivaAdmin = () => { const filtro = document.getElementById('filtroMasivoEstado').value; const tbody = document.getElementById('adminMasivoTbody'); document.getElementById('chkAllMasivo').checked = false; let acts = Object.values(window.actividadesProgramadas); if (filtro === 'solicitudes') { acts = acts.filter(a => a.estado === 'anulacion_solicitada'); } else if (filtro === 'espera') { acts = acts.filter(a => a.estado === 'espera'); } acts.sort((a, b) => new Date(a.fecha) - new Date(b.fecha)); if (acts.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400 font-medium">Sin actividades para mostrar.</td></tr>`; return; } let html = ''; acts.forEach(act => { let f = window.parseInputDate(act.fecha); let estadoLabel = act.estado === 'espera' ? '<span class="text-amber-600 font-bold bg-amber-50 px-1 rounded"><i class="fas fa-hourglass-half"></i> Espera</span>' : (act.estado === 'anulacion_solicitada' ? '<span class="text-red-600 font-bold bg-red-50 px-1 rounded">Anular</span>' : '<span class="text-emerald-600 font-bold">Activa</span>'); html += `<tr class="hover:bg-slate-50 transition-colors"><td class="p-3 text-center border-b border-slate-200"><input type="checkbox" class="chk-masivo w-4 h-4 text-red-600 rounded" data-id="act.id"data-curso="{act.curso}" data-grupo="act.idGrupo"></td><tdclass="p-3border-bborder-slate-200text-xs">{estadoLabel}</td><td class="p-3 border-b border-slate-200">${dias[f.getDay()-1]} f.getDate()/{f.getMonth()+1} Mact.bloque+1</td><tdclass="p-3border-bborder-slate-200font-bold">{act.curso}</td><td class="p-3 border-b border-slate-200">act.nombre</td><tdclass="p-3border-bborder-slate-200">{act.lugar}</td><td class="p-3 border-b border-slate-200">act.docente</td><tdclass="p-3border-bborder-slate-200"><buttononclick="window.abrirModalDetalle('{act.id}', '${act.curso}_${act.fecha}_${act.bloqueJornada}')" class="text-indigo-500 hover:text-indigo-700 text-xs font-bold"><i class="fas fa-external-link-alt"></i> Ver</button></td></tr>`; }); tbody.innerHTML = html; };
         window.toggleAllMasivo = (source) => { document.querySelectorAll('.chk-masivo').forEach(cb => cb.checked = source.checked); };
         window.eliminarMasivamente = () => { 
             const cbs = document.querySelectorAll('.chk-masivo:checked'); if (cbs.length === 0) return; 
@@ -5294,19 +5174,19 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
            // CÁLCULO DE HORA PARA EL MODAL INFO
             let textHora = '';
             if (act.horaInicio && act.horaFin) {
-                textHora = `${act.horaInicio} a ${act.horaFin}${act.duracionMin ? ' (' + window.lblDuracion(act.duracionMin) + ')' : ''}`;
+                textHora = `${act.horaInicio} a act.horaFin{act.duracionMin ? ' (' + window.lblDuracion(act.duracionMin) + ')' : ''}`;
             } else {
                 let bArr = window.getArrayBloques(act.jornada);
                 let bObj = bArr[act.bloque];
-                textHora = bObj ? `${bObj.title} (${bObj.time})` : `Módulo ${act.bloque+1}`;
+                textHora = bObj ? `bObj.title({bObj.time})` : `Módulo ${act.bloque+1}`;
             }
             
-            document.getElementById('det-fecha-exacta').innerText = `${dias[f.getDay()-1]} ${f.getDate()}/${f.getMonth()+1}, ${lblJor} | ${textHora}`;
+            document.getElementById('det-fecha-exacta').innerText = `${dias[f.getDay()-1]} f.getDate()/{f.getMonth()+1}, ${lblJor} | ${textHora}`;
             
             let recUI = document.getElementById('det-recursos-box'); let recList = document.getElementById('det-recursos-lista');
             if(act.recursos && act.recursos.length > 0) { 
                 recUI.classList.remove('hidden'); recList.innerHTML = ''; 
-                act.recursos.forEach(r => { let sTxt = r.estado === 'ok' ? 'OK' : (r.estado === 'espera' ? 'EN ESPERA' : 'PENDIENTE'); let sCol = r.estado === 'ok' ? 'text-emerald-600' : (r.estado === 'espera' ? 'text-rose-600' : 'text-amber-600'); recList.innerHTML += `<li>${r.cantidad}x ${r.nombre} - <span class="text-[9px] font-bold ${sCol}">${sTxt}</span></li>`; }); 
+                act.recursos.forEach(r => { let sTxt = r.estado === 'ok' ? 'OK' : (r.estado === 'espera' ? 'EN ESPERA' : 'PENDIENTE'); let sCol = r.estado === 'ok' ? 'text-emerald-600' : (r.estado === 'espera' ? 'text-rose-600' : 'text-amber-600'); recList.innerHTML += `<li>${r.cantidad}x ${r.nombre} - <span class="text-[9px] font-bold sCol">{sTxt}</span></li>`; }); 
             } else { 
                 recUI.classList.add('hidden'); 
             }
@@ -5462,7 +5342,7 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
             let prev = selBlq.value;
             let arr = window.getArrayBloques(selJor.value);
             let html = '';
-            arr.forEach((b, i) => html += `<option value="${i}">${b.title} (${b.time})</option>`);
+            arr.forEach((b, i) => html += `<option value="i">{b.title} (${b.time})</option>`);
             selBlq.innerHTML = html;
             if(prev !== '' && arr[parseInt(prev)]) selBlq.value = prev;
         };
@@ -5485,7 +5365,7 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
 
             let selDoc = document.getElementById('editDocenteSelect');
             let htmlDoc = '<option value="">-- Seleccionar Docente --</option>';
-            window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => htmlDoc += `<option value="${d.nombre}">${d.nombre}</option>`);
+            window.usuariosTotales.filter(u => u.rol === 'docente' || u.rol === 'admin').sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => htmlDoc += `<option value="d.nombre">{d.nombre}</option>`);
             selDoc.innerHTML = htmlDoc;
             selDoc.value = actRef.docente;
             // El docente no puede traspasar su reserva a otra persona; UTP, Encargado y Asistente sí
@@ -5510,23 +5390,23 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
             let selLugar = document.getElementById('editLugarSelect');
             let htmlLugar = '<option value="Sala de Clases">Sala Base del Curso</option>';
             htmlLugar += '<optgroup label="Recintos Especiales">';
-            window.recintosDelEdificio(edAct).forEach(r => htmlLugar += `<option value="${r.id}">${r.nombre}</option>`);
+            window.recintosDelEdificio(edAct).forEach(r => htmlLugar += `<option value="r.id">{r.nombre}</option>`);
             htmlLugar += '</optgroup><optgroup label="Salas de Clases">';
-            window.salasDelEdificio(edAct).forEach(s => htmlLugar += `<option value="${s.id}">${s.nombre}</option>`);
+            window.salasDelEdificio(edAct).forEach(s => htmlLugar += `<option value="s.id">{s.nombre}</option>`);
             htmlLugar += '</optgroup><option value="Solo Recursos">Solo Materiales (Sin Sala)</option>';
             selLugar.innerHTML = htmlLugar;
             
             if(actRef.lugar && actRef.lugar !== 'Solo Recursos' && !window.recintosDisponibles.find(r=>r.id===actRef.lugar) && !window.todasLasSalas().find(s=>s.id===actRef.lugar)){
                 let cBase = window.detallesCursos[actRef.curso]?.sala;
                 if(actRef.lugar === cBase) selLugar.value = "Sala de Clases";
-                else { htmlLugar += `<option value="${actRef.lugar}">${actRef.lugar}</option>`; selLugar.innerHTML = htmlLugar; selLugar.value = actRef.lugar; }
+                else { htmlLugar += `<option value="actRef.lugar">{actRef.lugar}</option>`; selLugar.innerHTML = htmlLugar; selLugar.value = actRef.lugar; }
             } else {
                 selLugar.value = actRef.lugar;
             }
 
             let selRec = document.getElementById('editSelectRecurso');
             let htmlRec = '<option value="">-- Catálogo --</option>';
-            window.catalogoDelEdificio(edAct).forEach(r => { htmlRec += `<option value="${r.id}">${r.nombre} (Disp: ${r.stock})</option>`; });
+            window.catalogoDelEdificio(edAct).forEach(r => { htmlRec += `<option value="r.id">{r.nombre} (Disp: ${r.stock})</option>`; });
             selRec.innerHTML = htmlRec;
 
             window.recursosEditTemp = actRef.recursos ? JSON.parse(JSON.stringify(actRef.recursos)) : [];
@@ -5561,7 +5441,7 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
             let html = '';
             window.recursosEditTemp.forEach((r, idx) => {
                 let icon = window.getIconoRecurso(r.nombre);
-                html += `<div class="flex justify-between items-center bg-slate-50 p-1 rounded shadow-sm border border-emerald-100 mb-1"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> ${r.nombre}</span><button type="button" onclick="window.quitarRecursoEdit(${idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`;
+                html += `<div class="flex justify-between items-center bg-slate-50 p-1 rounded shadow-sm border border-emerald-100 mb-1"><span class="font-bold text-slate-700">${r.cantidad}x <i class="fas ${icon} text-teal-600 mx-1"></i> r.nombre</span><buttontype="button"onclick="window.quitarRecursoEdit({idx})" class="text-red-400 hover:text-red-600"><i class="fas fa-times"></i></button></div>`;
             });
             cont.innerHTML = html;
         }
@@ -5667,6 +5547,9 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
 
     </script>
 
+    <!-- MI AGENDA + DISEÑO PARA CELULAR (archivo mi-agenda.js, en la misma carpeta) -->
+    <script type="module" src="mi-agenda.js"></script>
+
     <!-- PWA: registro y aviso de instalación -->
     <script>
     (function () {
@@ -5712,3 +5595,4 @@ window.renderCatalogoAdmin = () => { const cont = document.getElementById('admin
     </script>
 </body>
 </html>
+
