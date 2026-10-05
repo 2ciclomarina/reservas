@@ -1,5 +1,9 @@
-const CACHE = 'planificador-v2'; // súbalo a v3, v4... cada vez que publique cambios
-const CORE = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png'];
+const CACHE = 'planificador-v3'; // súbalo a v4, v5... cada vez que publique cambios
+const CORE = [
+  './', './index.html', './mi-agenda.js', './manifest.webmanifest',
+  './icons/icon-192.png', './icons/icon-512.png',
+  './icons/icon-maskable-512.png', './icons/apple-touch-icon.png'
+];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(
@@ -27,12 +31,17 @@ self.addEventListener('fetch', (e) => {
       url.hostname.includes('identitytoolkit.googleapis.com') ||
       url.hostname.includes('securetoken.googleapis.com')) return;
 
-  // La página: primero red (así reciben las actualizaciones), si no hay internet usa la copia guardada
-  if (req.mode === 'navigate') {
+  // La página y los .js propios: primero internet (para recibir actualizaciones), si no hay usa la copia guardada
+  const esPropioJs = url.origin === self.location.origin && /\.(js|webmanifest)$/.test(url.pathname);
+  if (req.mode === 'navigate' || esPropioJs) {
+    const clave = req.mode === 'navigate' ? './index.html' : req;
     e.respondWith(
       fetch(req)
-        .then((res) => { const copy = res.clone(); caches.open(CACHE).then((c) => c.put('./index.html', copy)); return res; })
-        .catch(() => caches.match('./index.html'))
+        .then((res) => {
+          if (res && res.ok) { const copy = res.clone(); caches.open(CACHE).then((c) => c.put(clave, copy)); }
+          return res;
+        })
+        .catch(() => caches.match(clave))
     );
     return;
   }
@@ -51,4 +60,3 @@ self.addEventListener('fetch', (e) => {
     })
   );
 });
-
